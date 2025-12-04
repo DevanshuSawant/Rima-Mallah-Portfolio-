@@ -1,0 +1,419 @@
+
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import BrowserFrame from './components/BrowserFrame';
+import Card from './components/Card';
+import Clippy from './components/Clippy';
+import CuratorWindow from './components/CuratorWindow';
+import { SectionType, TabId, TabConfig, SectionConfig } from './types';
+import { SECTIONS, PORTFOLIO_ITEMS } from './constants';
+import { X, Instagram, Linkedin, Mail, Send } from 'lucide-react';
+
+const App: React.FC = () => {
+  // App State
+  const [activeSectionId, setActiveSectionId] = useState<SectionType>(SectionType.TYPE);
+  const [activeTabId, setActiveTabId] = useState<TabId>(SECTIONS[0].tabs[0].id);
+  const [activeSubFilter, setActiveSubFilter] = useState<string>('All');
+  
+  // Fake window states
+  const [showProfile, setShowProfile] = useState(true);
+  const [showSocials, setShowSocials] = useState(true);
+  
+  // Clippy Interaction State
+  const [clippyMessage, setClippyMessage] = useState<string | null>(null);
+
+  // Contact Form State
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  // Refs for scrolling
+  const contentRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Derived Data
+  const activeSection = SECTIONS.find(s => s.id === activeSectionId) as SectionConfig;
+  const activeTab = activeSection.tabs.find(t => t.id === activeTabId) as TabConfig;
+
+  // Handlers
+  const scrollToContent = () => {
+    // Small timeout to allow render to complete before scrolling
+    setTimeout(() => {
+        if (contentRef.current && scrollContainerRef.current) {
+            const container = scrollContainerRef.current;
+            const element = contentRef.current;
+            
+            // Get positions relative to viewport
+            const containerRect = container.getBoundingClientRect();
+            const elementRect = element.getBoundingClientRect();
+            
+            // Calculate the current scroll position + difference relative to container top
+            const currentScrollTop = container.scrollTop;
+            const relativeOffset = elementRect.top - containerRect.top;
+            
+            // Scroll to the element with some padding (20px)
+            container.scrollTo({ 
+                top: currentScrollTop + relativeOffset - 20, 
+                behavior: 'smooth' 
+            });
+        }
+    }, 50);
+  };
+
+  const handleSectionChange = (sectionId: SectionType) => {
+    setActiveSectionId(sectionId);
+    const newSection = SECTIONS.find(s => s.id === sectionId);
+    if (newSection && newSection.tabs.length > 0) {
+      setActiveTabId(newSection.tabs[0].id);
+      setActiveSubFilter('All');
+    }
+    scrollToContent();
+  };
+
+  const handleTabChange = (tabId: TabId) => {
+    setActiveTabId(tabId);
+    setActiveSubFilter('All');
+    scrollToContent();
+  };
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const subject = `Portfolio Inquiry from ${contactForm.name}`;
+    const body = `Name: ${contactForm.name}\nEmail: ${contactForm.email}\n\nMessage:\n${contactForm.message}`;
+    // Using a placeholder email since we don't have a backend
+    window.location.href = `mailto:hello@rimamallah.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setClippyMessage("Opening your email client to send this!");
+    setTimeout(() => setClippyMessage(null), 3000);
+  };
+
+  // Filter Items
+  const filteredItems = useMemo(() => {
+    let items = PORTFOLIO_ITEMS;
+    
+    // Level 1: Filter by Main Tab Logic
+    switch (activeTabId) {
+        // Content Types
+        case TabId.EDITORIAL:
+            items = items.filter(i => i.contentType === 'Editorial');
+            break;
+        case TabId.SOCIAL:
+            items = items.filter(i => i.contentType === 'Social');
+            break;
+        case TabId.PROMOTIONAL:
+            items = items.filter(i => i.contentType === 'Promotional');
+            break;
+        
+        // Content Formats
+        case TabId.MUSINGS:
+            items = items.filter(i => i.contentFormat.includes('Musing') || i.contentFormat.includes('Storytelling'));
+            break;
+        case TabId.REELS:
+            items = items.filter(i => i.contentFormat.includes('Reel') || i.contentFormat.includes('Video') || i.contentFormat.includes('Audio') || i.contentFormat.includes('Vox Pop'));
+            break;
+        case TabId.CAROUSELS:
+            items = items.filter(i => i.contentFormat.includes('Carousel') || i.contentFormat.includes('Infographic') || i.contentFormat.includes('Thread') || i.contentFormat.includes('Dump'));
+            break;
+        case TabId.SCRIPTS:
+             items = items.filter(i => i.contentFormat.includes('Script'));
+             break;
+    }
+
+    // Level 2: Sub Filters (if active)
+    if (activeSubFilter !== 'All') {
+        // Simple string match for the subfilter in contentFormat
+        items = items.filter(i => i.contentFormat.includes(activeSubFilter));
+    }
+
+    return items;
+  }, [activeTabId, activeSubFilter]);
+
+  const urlDisplay = `www.rima-mallah.com/${activeSectionId.toLowerCase().replace(' ', '-')}/${activeTab?.label.toLowerCase().replace(' ', '_')}.html`;
+
+  return (
+    <>
+    <BrowserFrame urlPath={urlDisplay}>
+      
+      {/* Tab Rail - Retro Style */}
+      <div className="bg-[#d4d4d4] pt-2 px-2 flex items-end border-b-2 border-white border-l-white border-r-gray-500 gap-1 overflow-x-auto no-scrollbar shadow-inner">
+        {/* Toggle Sections */}
+        <div className="flex mr-4 mb-1 border-2 border-gray-600 border-b-white border-r-white p-0.5 bg-gray-200 shrink-0">
+            <button 
+                onClick={() => handleSectionChange(SectionType.TYPE)}
+                className={`px-3 py-1 font-pixel text-lg leading-none transition-colors ${activeSectionId === SectionType.TYPE ? 'bg-[#000080] text-white' : 'text-gray-600 hover:bg-gray-300'}`}
+            >
+                BY TYPE
+            </button>
+            <button 
+                onClick={() => handleSectionChange(SectionType.FORMAT)}
+                className={`px-3 py-1 font-pixel text-lg leading-none transition-colors ${activeSectionId === SectionType.FORMAT ? 'bg-[#000080] text-white' : 'text-gray-600 hover:bg-gray-300'}`}
+            >
+                BY FORMAT
+            </button>
+        </div>
+
+        {/* Dynamic Tabs */}
+        {activeSection.tabs.map((tab) => {
+            const isActive = activeTabId === tab.id;
+            return (
+                <button
+                    key={tab.id}
+                    onClick={() => handleTabChange(tab.id)}
+                    className={`
+                        relative px-4 py-1.5 font-pixel text-xl uppercase tracking-wide min-w-max border-t-2 border-x-2 
+                        ${isActive 
+                            ? 'bg-white text-black border-white -mb-[2px] z-10' 
+                            : 'bg-[#b0b0b0] text-gray-700 border-gray-500 hover:bg-[#c0c0c0]'
+                        }
+                    `}
+                >
+                    {tab.label}
+                </button>
+            );
+        })}
+      </div>
+
+      {/* Main Content Area */}
+      <div 
+        ref={scrollContainerRef}
+        className="flex-1 overflow-y-scroll overflow-x-hidden bg-[url('https://www.transparenttextures.com/patterns/graphy.png')] bg-white p-4 sm:p-8 relative retro-scrollbar"
+      >
+        
+        {/* Hero Section (Refactored) */}
+        <div className="max-w-7xl mx-auto mb-16 relative z-10">
+            
+            {/* Header Title */}
+            <div className="mb-8">
+                 <h1 className="font-pixel text-6xl sm:text-7xl leading-none text-black mb-2">
+                    portfolio!
+                 </h1>
+                 <div className="h-1 w-24 bg-blue-600"></div>
+            </div>
+
+            <div className="flex flex-col xl:flex-row gap-8 items-start">
+                
+                {/* Center Column: Bio & Profile Image */}
+                <div className="flex-1 min-w-0">
+                    <div className="flex flex-col md:flex-row gap-8 items-start">
+                        {/* Bio & Skills Column */}
+                        <div className="flex-1">
+                            <div className="space-y-2">
+                                <h2 className="font-serif-display italic text-4xl sm:text-5xl text-[#000080]">
+                                    Rima Mallah
+                                </h2>
+                                <p className="font-pixel text-xl text-gray-600">
+                                    // Content Strategist & Writer
+                                </p>
+                                
+                                <div className="font-serif text-lg leading-relaxed text-gray-800 bg-white/50 backdrop-blur-sm p-4 border border-gray-200 mt-4">
+                                    Hello! I'm Rima. I specialize in crafting narratives that stick. Whether it's the polished storytelling of <strong>TTT</strong>, the unhinged relatability of <strong>Dobara</strong>, or the intellectual analysis of <strong>Fingertips</strong>, I adapt my voice to build communities.
+                                </div>
+                            </div>
+
+                            {/* Skills Row */}
+                            <div className="mt-6">
+                                <h3 className="font-serif-display text-blue-800 text-xl border-b border-blue-800 inline-block mb-3">TOOLS & SKILLS</h3>
+                                <div className="flex gap-3">
+                                    {['Ps', 'Ai', 'Pr', 'Wp', 'Id'].map((skill, i) => (
+                                        <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-300 shadow-[2px_2px_5px_rgba(0,0,0,0.1)] flex items-center justify-center font-bold text-xs text-gray-700 border border-white">
+                                            {skill}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                         {/* Right Sidebar: Profile Window & Socials */}
+                        <div className="shrink-0 w-full md:w-64 flex flex-col gap-6 md:-mt-20">
+                            {/* Profile Window */}
+                            {showProfile && (
+                                <div className="w-full bg-[#c0c0c0] border-2 border-white border-b-black border-r-black shadow-[8px_8px_0_0_rgba(0,0,0,0.2)] transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                                    <div className="bg-[#000080] px-2 py-1 flex justify-between items-center">
+                                        <span className="text-white font-pixel text-sm">MEET-RIMA.JPG</span>
+                                        <button onClick={() => setShowProfile(false)} className="bg-[#c0c0c0] w-5 h-5 flex items-center justify-center border border-white border-b-black border-r-black active:border-t-black active:border-l-black active:border-b-white active:border-r-white">
+                                            <X size={12} />
+                                        </button>
+                                    </div>
+                                    <div className="p-1">
+                                        <div className="border-2 border-gray-600 border-b-white border-r-white bg-white p-2">
+                                            <img 
+                                                src="https://picsum.photos/600/600?random=100" 
+                                                alt="Rima Profile" 
+                                                className="w-full h-auto aspect-square object-cover filter contrast-125 sepia-[0.2]"
+                                            />
+                                            <div className="mt-2 text-center font-serif-display italic text-gray-500 text-sm">
+                                                "Capturing the moment."
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Socials Window - Moved here */}
+                            {showSocials && (
+                                <div className="w-full bg-[#c0c0c0] border-2 border-white border-b-black border-r-black shadow-lg">
+                                    <div className="bg-[#000080] px-2 py-1 flex justify-between items-center">
+                                        <span className="text-white font-pixel">SOCIALS.EXE</span>
+                                        <button onClick={() => setShowSocials(false)} className="bg-[#c0c0c0] w-5 h-5 flex items-center justify-center border border-white border-b-black border-r-black active:border-t-black active:border-l-black active:border-b-white active:border-r-white">
+                                            <X size={12} />
+                                        </button>
+                                    </div>
+                                    <div className="p-4 space-y-3 font-pixel text-lg">
+                                        <a href="https://www.instagram.com/rirachaaa/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:bg-blue-100 p-1 cursor-pointer">
+                                            <Instagram size={18} /> @rirachaaa
+                                        </a>
+                                        <a href="https://www.linkedin.com/in/rimamallah/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:bg-blue-100 p-1 cursor-pointer">
+                                            <Linkedin size={18} /> /in/rimamallah
+                                        </a>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t-2 border-gray-300 border-dashed my-8"></div>
+
+        {/* Content Section */}
+        <div className="max-w-7xl mx-auto scroll-mt-24" ref={contentRef}>
+             <div className="flex justify-between items-end mb-6">
+                <div>
+                     <h3 className="font-pixel text-3xl bg-black text-white px-2 inline-block mb-1">
+                        DIR: \{activeSectionId.toUpperCase()}\{activeTab?.label.toUpperCase()}
+                    </h3>
+                    {activeTab?.subFilters && (
+                        <div className="flex flex-wrap gap-2 mt-2">
+                            {activeTab.subFilters.map(filter => (
+                                <button
+                                    key={filter}
+                                    onClick={() => setActiveSubFilter(filter)}
+                                    className={`
+                                        px-3 py-1 font-pixel text-lg border-2 
+                                        ${activeSubFilter === filter 
+                                            ? 'bg-blue-800 text-white border-black shadow-[2px_2px_0_0_#000]' 
+                                            : 'bg-white text-black border-gray-400 hover:bg-gray-100'
+                                        }
+                                    `}
+                                >
+                                    {filter}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+             </div>
+
+            {/* Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20">
+                {filteredItems.length > 0 ? (
+                    filteredItems.map(item => (
+                        <Card 
+                            key={item.id} 
+                            item={item} 
+                            onInteraction={setClippyMessage}
+                        />
+                    ))
+                ) : (
+                    <div className="col-span-full py-20 text-center font-pixel text-2xl text-gray-400 border-2 border-dashed border-gray-300">
+                        <p>FOLDER IS EMPTY...</p>
+                    </div>
+                )}
+            </div>
+        </div>
+
+        {/* Contact Section */}
+        <div className="border-t-2 border-gray-300 border-dashed my-12"></div>
+        
+        <div id="contact-section" className="max-w-4xl mx-auto pb-20">
+            <div className="flex flex-col items-center mb-8">
+                 <h2 className="font-pixel text-4xl mb-2">LET'S TALK</h2>
+                 <p className="font-serif text-gray-600 italic">"Because every great story starts with a hello."</p>
+            </div>
+
+            <div className="bg-[#c0c0c0] border-2 border-white border-b-black border-r-black shadow-[8px_8px_0_0_rgba(0,0,0,0.2)]">
+                {/* Window Header */}
+                <div className="bg-[#000080] px-2 py-1 flex justify-between items-center select-none">
+                    <div className="flex items-center gap-2 text-white">
+                        <Mail size={16} />
+                        <span className="font-pixel tracking-wider text-sm">COMPOSE_MESSAGE.EXE</span>
+                    </div>
+                    <div className="flex gap-1">
+                        <button className="w-4 h-4 bg-[#c0c0c0] border-t border-l border-white border-r-black border-b-black flex items-center justify-center active:border-t-black active:border-l-black active:border-r-white active:border-b-white">
+                            <span className="block w-2 h-0.5 bg-black"></span>
+                        </button>
+                        <button className="w-4 h-4 bg-[#c0c0c0] border-t border-l border-white border-r-black border-b-black flex items-center justify-center active:border-t-black active:border-l-black active:border-r-white active:border-b-white">
+                             <div className="w-2 h-2 border border-black border-t-2"></div>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Form */}
+                <form onSubmit={handleContactSubmit} className="p-4 sm:p-6 flex flex-col gap-4">
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                            <label className="font-pixel text-sm font-bold text-gray-700">FROM_NAME:</label>
+                            <input 
+                                required
+                                type="text" 
+                                value={contactForm.name}
+                                onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                                className="w-full p-2 font-pixel text-lg border-2 border-gray-600 border-b-white border-r-white bg-white focus:outline-none focus:bg-[#ffffcc] transition-colors"
+                                placeholder="Guest User"
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <label className="font-pixel text-sm font-bold text-gray-700">RETURN_ADDR:</label>
+                            <input 
+                                required
+                                type="email" 
+                                value={contactForm.email}
+                                onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                                className="w-full p-2 font-pixel text-lg border-2 border-gray-600 border-b-white border-r-white bg-white focus:outline-none focus:bg-[#ffffcc] transition-colors"
+                                placeholder="email@example.com"
+                            />
+                        </div>
+                     </div>
+
+                     <div className="space-y-1">
+                        <label className="font-pixel text-sm font-bold text-gray-700">MESSAGE_BODY:</label>
+                        <textarea 
+                            required
+                            rows={6} 
+                            value={contactForm.message}
+                            onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                            className="w-full p-2 font-sans text-base border-2 border-gray-600 border-b-white border-r-white bg-white focus:outline-none focus:bg-[#ffffcc] transition-colors resize-y"
+                            placeholder="Type your message here..."
+                        ></textarea>
+                     </div>
+
+                     {/* Toolbar / Actions */}
+                     <div className="flex justify-between items-center pt-2 mt-2 border-t border-gray-400 border-dashed">
+                        <div className="font-pixel text-xs text-gray-600 hidden sm:block">
+                            READY TO SEND...
+                        </div>
+                        <button 
+                            type="submit"
+                            className="flex items-center gap-2 px-6 py-2 bg-[#c0c0c0] font-pixel text-lg font-bold border-2 border-white border-b-black border-r-black active:border-t-black active:border-l-black active:border-r-white active:border-b-white active:translate-y-1 hover:bg-[#d0d0d0] transition-all"
+                        >
+                            <Send size={16} />
+                            <span>SEND_MAIL</span>
+                        </button>
+                     </div>
+                </form>
+            </div>
+        </div>
+
+      </div>
+
+      {/* Clippy Helper */}
+      <Clippy activeTab={activeTab?.label} overrideMessage={clippyMessage} />
+      
+    </BrowserFrame>
+    </>
+  );
+};
+
+export default App;
