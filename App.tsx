@@ -329,7 +329,7 @@ const App: React.FC = () => {
         
         <div id="contact-section" className="max-w-4xl mx-auto pb-20">
             <div className="flex flex-col items-center mb-8">
-                 <h2 className="font-pixel text-4xl mb-2">LET'S TALK</h2>
+                 <h2 className="font-pixel text-4xl mb-2 text-black">LET'S TALK</h2>
                  <p className="font-serif text-gray-600 italic">"Because every great story starts with a hello."</p>
             </div>
 
@@ -360,7 +360,7 @@ const App: React.FC = () => {
                                 type="text" 
                                 value={contactForm.name}
                                 onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
-                                className="w-full p-2 font-pixel text-lg border-2 border-gray-600 border-b-white border-r-white bg-white focus:outline-none focus:bg-[#ffffcc] transition-colors"
+                                className="w-full p-2 font-pixel text-lg text-black border-2 border-gray-600 border-b-white border-r-white bg-white focus:outline-none focus:bg-[#ffffcc] transition-colors placeholder-gray-500"
                                 placeholder="Guest User"
                             />
                         </div>
@@ -371,7 +371,7 @@ const App: React.FC = () => {
                                 type="email" 
                                 value={contactForm.email}
                                 onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
-                                className="w-full p-2 font-pixel text-lg border-2 border-gray-600 border-b-white border-r-white bg-white focus:outline-none focus:bg-[#ffffcc] transition-colors"
+                                className="w-full p-2 font-pixel text-lg text-black border-2 border-gray-600 border-b-white border-r-white bg-white focus:outline-none focus:bg-[#ffffcc] transition-colors placeholder-gray-500"
                                 placeholder="email@example.com"
                             />
                         </div>
@@ -384,23 +384,34 @@ const App: React.FC = () => {
                             rows={6} 
                             value={contactForm.message}
                             onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
-                            className="w-full p-2 font-sans text-base border-2 border-gray-600 border-b-white border-r-white bg-white focus:outline-none focus:bg-[#ffffcc] transition-colors resize-y"
+                            className="w-full p-2 font-sans text-base text-black border-2 border-gray-600 border-b-white border-r-white bg-white focus:outline-none focus:bg-[#ffffcc] transition-colors resize-y placeholder-gray-500"
                             placeholder="Type your message here..."
                         ></textarea>
                      </div>
 
                      {/* Toolbar / Actions */}
-                     <div className="flex justify-between items-center pt-2 mt-2 border-t border-gray-400 border-dashed">
+                     <div className="flex flex-col sm:flex-row justify-between items-center pt-2 mt-2 border-t border-gray-400 border-dashed gap-4 sm:gap-0">
                         <div className="font-pixel text-xs text-gray-600 hidden sm:block">
                             READY TO SEND...
                         </div>
-                        <button 
-                            type="submit"
-                            className="flex items-center gap-2 px-6 py-2 bg-[#c0c0c0] font-pixel text-lg font-bold border-2 border-white border-b-black border-r-black active:border-t-black active:border-l-black active:border-r-white active:border-b-white active:translate-y-1 hover:bg-[#d0d0d0] transition-all"
-                        >
-                            <Send size={16} />
-                            <span>SEND_MAIL</span>
-                        </button>
+                        <div className="flex gap-3 w-full sm:w-auto justify-end">
+                            <a 
+                                href="https://ig.me/m/rirachaaa"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 px-4 py-2 bg-[#c0c0c0] font-pixel text-lg font-bold border-2 border-white border-b-black border-r-black active:border-t-black active:border-l-black active:border-r-white active:border-b-white active:translate-y-1 hover:bg-[#d0d0d0] transition-all text-black no-underline justify-center flex-1 sm:flex-none"
+                            >
+                                <Instagram size={16} />
+                                <span>INSTA_DM</span>
+                            </a>
+                            <button 
+                                type="submit"
+                                className="flex items-center gap-2 px-6 py-2 bg-[#c0c0c0] font-pixel text-lg font-bold border-2 border-white border-b-black border-r-black active:border-t-black active:border-l-black active:border-r-white active:border-b-white active:translate-y-1 hover:bg-[#d0d0d0] transition-all justify-center flex-1 sm:flex-none"
+                            >
+                                <Send size={16} className="text-black" />
+                                <span className="text-black">SEND_MAIL</span>
+                            </button>
+                        </div>
                      </div>
                 </form>
             </div>
