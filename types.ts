@@ -1,3 +1,6 @@
+
+import React from 'react';
+
 export enum SectionType {
   TYPE = 'Content Type',
   FORMAT = 'Content Format'
@@ -18,21 +21,29 @@ export enum TabId {
 
 export type Brand = 'Terribly Tiny Tales' | 'Dobara' | 'Fingertips' | 'Juice Box' | 'Personal' | 'Other';
 
+export interface MediaItem {
+  type: 'image' | 'video';
+  url: string;
+  thumbnail?: string;
+}
+
 export interface PortfolioItem {
   id: string;
   title: string;
   description: string;
   contentType: 'Editorial' | 'Social' | 'Promotional';
-  contentFormat: string; // e.g., 'Static Musing', 'Animated Reel', 'Vox Pop'
-  contentStyle: string; // Adjective e.g., 'Witty', 'Emotional'
+  contentFormat: string;
+  contentStyle: string;
   brand: Brand;
-  imageUrl: string;
+  imageUrl: string; // Keep as fallback/primary
+  media?: MediaItem[]; // New: support for multiple assets
   date: string;
   instagramLink?: string;
+  driveLink?: string;
   stats?: {
     value: string;
     label: string;
-  };
+  }[];
 }
 
 export interface TabConfig {

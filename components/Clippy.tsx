@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 
@@ -12,6 +13,9 @@ const Clippy: React.FC<ClippyProps> = ({ activeTab, overrideMessage }) => {
   const [isTalking, setIsTalking] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasGreetedRef = useRef(false);
+
+  // GIF
+  const idleGif = "https://media.tenor.com/Tmu1IbKTtosAAAAi/clippy.gif";
 
   const speak = (text: string, duration?: number) => {
     // Clear any existing timeout to prevent state conflicts
@@ -31,17 +35,16 @@ const Clippy: React.FC<ClippyProps> = ({ activeTab, overrideMessage }) => {
   // Handle Interaction Overrides (Hover, Click)
   useEffect(() => {
     if (overrideMessage) {
-        // Speak without timeout (stays while hovering)
         speak(overrideMessage);
-    } else {
-        // Stop talking immediately when hover ends
+    } else if (!isTalking) {
+        // If message cleared, stop talking
         setIsTalking(false);
     }
   }, [overrideMessage]);
 
   // Handle Tab Changes
   useEffect(() => {
-    // If an interaction is active (e.g. hovering), do not interrupt with tab message
+    // If an interaction is active, do not interrupt with tab message
     if (overrideMessage) return;
 
     // Check if this is the very first render/greeting
@@ -79,11 +82,11 @@ const Clippy: React.FC<ClippyProps> = ({ activeTab, overrideMessage }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 flex flex-col items-end animate-bounce-slight">
+    <div className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 flex flex-col items-end animate-bounce-slight pointer-events-none sm:pointer-events-auto">
       
       {/* Speech Bubble */}
       {(isTalking || overrideMessage) && (
-          <div className="relative bg-[#ffffcc] text-black border border-black p-3 mb-2 rounded-lg shadow-md max-w-[200px] font-pixel text-lg leading-tight">
+          <div className="relative bg-[#ffffcc] text-black border border-black p-2 sm:p-3 mb-2 rounded-lg shadow-md max-w-[160px] sm:max-w-[200px] font-pixel text-sm sm:text-lg leading-tight pointer-events-auto">
             {message}
             <button 
                 onClick={() => setIsVisible(false)} 
@@ -98,13 +101,13 @@ const Clippy: React.FC<ClippyProps> = ({ activeTab, overrideMessage }) => {
 
       {/* Clippy GIF Character */}
       <div 
-        className="w-24 h-24 sm:w-32 sm:h-32 transition-transform hover:scale-110 cursor-pointer" 
+        className="w-16 h-16 sm:w-32 sm:h-32 transition-transform hover:scale-110 cursor-pointer pointer-events-auto" 
         onClick={() => {
           speak("Need help? Just click the tabs above to filter the work!", 4000);
         }}
       >
         <img 
-            src="https://media.tenor.com/Tmu1IbKTtosAAAAi/clippy.gif" 
+            src={idleGif} 
             alt="Clippy" 
             className="w-full h-full object-contain drop-shadow-lg"
         />

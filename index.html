@@ -24,10 +24,6 @@
       }
       
       /* Retro Scrollbar Implementation (Windows 95 Style) */
-      /* Note: We intentionally DO NOT set scrollbar-color or scrollbar-width here 
-         because modern Chrome uses them to override the webkit-scrollbar pseudo-elements, 
-         which prevents the 3D buttons from rendering. */
-      
       .retro-scrollbar::-webkit-scrollbar {
         width: 16px;
         height: 16px;
@@ -110,6 +106,16 @@
       .bg-dots {
         background-image: radial-gradient(#000 1px, transparent 1px);
         background-size: 20px 20px;
+      }
+
+      /* XP Loading Bar Animation */
+      @keyframes xp-loading {
+        0% { transform: translateX(-40px); }
+        100% { transform: translateX(260px); }
+      }
+      .animate-xp-loading {
+        animation: xp-loading 2s linear infinite;
+        will-change: transform;
       }
     </style>
   <script type="importmap">

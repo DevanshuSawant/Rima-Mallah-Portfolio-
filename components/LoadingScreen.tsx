@@ -34,7 +34,7 @@ const LoadingScreen: React.FC = () => {
         {/* Progress Bar Container */}
         <div className="relative w-64 h-[18px] border-[2px] border-[#b2b2b2] rounded-[4px] p-[2px] overflow-hidden bg-black box-border">
             {/* Moving Blocks */}
-            <div className="absolute top-[2px] bottom-[2px] w-full flex gap-[2px] animate-xp-loading">
+            <div className="absolute top-[2px] bottom-[2px] w-auto flex gap-[2px] animate-xp-loading">
                 <div className="w-[10px] h-full bg-gradient-to-b from-[#2d4d94] via-[#5b85d9] to-[#2d4d94] rounded-[1px] shadow-[0_0_2px_rgba(255,255,255,0.4)]"></div>
                 <div className="w-[10px] h-full bg-gradient-to-b from-[#2d4d94] via-[#5b85d9] to-[#2d4d94] rounded-[1px] shadow-[0_0_2px_rgba(255,255,255,0.4)]"></div>
                 <div className="w-[10px] h-full bg-gradient-to-b from-[#2d4d94] via-[#5b85d9] to-[#2d4d94] rounded-[1px] shadow-[0_0_2px_rgba(255,255,255,0.4)]"></div>
