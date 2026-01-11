@@ -30,6 +30,11 @@ async function processDirectory(directory) {
             const ext = path.extname(file).toLowerCase();
             const basename = path.basename(file, ext);
 
+            // Skip WebP files to avoid re-processing outputs
+            if (ext === '.webp') continue;
+            // Skip optimized videos to avoid loops
+            if (file.includes('_optimized')) continue;
+
             if (IMAGE_EXTENSIONS.includes(ext)) {
                 await optimizeImage(fullPath, directory, basename);
             } else if (VIDEO_EXTENSIONS.includes(ext)) {
@@ -42,15 +47,17 @@ async function processDirectory(directory) {
 async function optimizeImage(filePath, directory, basename) {
     const outputPath = path.join(directory, `${basename}.webp`);
 
+    // Check if output exists to skip
     if (fs.existsSync(outputPath)) {
         console.log(`Skipping existing: ${outputPath}`);
         return;
     }
 
-    console.log(`Optimizing Image: ${filePath}`);
+    console.log(`Optimizing Image (with rotation fix): ${filePath}`);
 
     try {
         await sharp(filePath)
+            .rotate() // Auto-rotate based on EXIF orientation
             // Resize if width is larger than 1920, keeping aspect ratio
             .resize({ width: 1920, withoutEnlargement: true })
             .webp({ quality: 80 })
@@ -63,39 +70,16 @@ async function optimizeImage(filePath, directory, basename) {
 
 function optimizeVideo(filePath, directory, basename) {
     return new Promise((resolve, reject) => {
-        // For video, we might want to keep the original extension if it's already mp4, 
-        // but to ensure it's optimized, we'll write to a temp file then rename, 
-        // OR write to a new 'optimized.mp4' name. 
-        // The prompt asked for "web optimised versions".
-        
-        // If it's already .mp4, we need to be careful not to overwrite source while reading
-        // unless we use a temp file.
-        // Let's adopt a naming convention: name_optimized.mp4 if source is mp4, 
-        // or just name.mp4 if source is NOT mp4 (e.g. .mov).
-        
-        // Actually, for simplicity and safety: naming it `filename.mp4` might conflict if source is `filename.mp4`.
-        // Ideally we want to replace the original OR have a clear new version.
-        // Given the requirement "convert all... to web optimised versions", 
-        // let's create `filename_optim.mp4`.
-        // BUT user might want to simple replace imports. 
-        
-        // Let's stick to the plan: "Saves optimized files in the same directory... side-by-side"
-        // If source is `foo.mov`, output `foo.mp4`.
-        // If source is `foo.mp4`, output `foo_web.mp4`? 
-        // Let's keep it simple: If output filename == input filename, skip or add suffix.
-        
         let outputName = `${basename}.mp4`;
         let outputPath = path.join(directory, outputName);
 
         if (filePath === outputPath) {
-            // Source is already .mp4 with same name. 
-            // We should create a temporary or suffixed file.
             outputName = `${basename}_optimized.mp4`;
             outputPath = path.join(directory, outputName);
         }
 
         if (fs.existsSync(outputPath)) {
-            console.log(`Skipping existing: ${outputPath}`);
+            console.log(`Skipping existing video: ${outputPath}`);
             resolve();
             return;
         }
@@ -110,8 +94,7 @@ function optimizeVideo(filePath, directory, basename) {
                 '-c:a aac',
                 '-b:a 128k',
                 '-movflags +faststart',
-                // Ensure max width 1920 (optional, but good for web)
-                '-vf scale=\'min(1920,iw):-2\'' 
+                '-vf scale=\'min(1920,iw):-2\''
             ])
             .save(outputPath)
             .on('end', () => {
