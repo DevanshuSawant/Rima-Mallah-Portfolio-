@@ -620,7 +620,6 @@ const App: React.FC = () => {
                             <div className="p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                                 <div className="flex flex-col gap-1 text-center sm:text-left">
                                     <span className="font-pixel text-lg">PREFER A QUICK CHAT?</span>
-                                    <span className="font-pixel text-xs text-gray-600">SLIDE INTO THE DMS FOR A FASTER RESPONSE.</span>
                                 </div>
                                 <a
                                     href="https://ig.me/m/rirachaaa"
