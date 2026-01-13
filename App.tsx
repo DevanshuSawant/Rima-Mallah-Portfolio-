@@ -655,7 +655,7 @@ const App: React.FC = () => {
                             <form onSubmit={handleContactSubmit} className="p-4 sm:p-6 flex flex-col gap-4">
                                 <div className="text-center sm:text-left mb-2">
                                     <span className="font-pixel text-lg block">OR ARE YOU MORE OLD SCHOOL?</span>
-                                    <span className="font-pixel text-xs text-gray-600 block">EVEN THAT WORKS FOR ME.</span>
+
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
