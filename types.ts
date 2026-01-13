@@ -13,10 +13,9 @@ export enum TabId {
   PROMOTIONAL = 'Promotional',
 
   // Content Formats
-  MUSINGS = 'Musings',
+  // Content Formats
   REELS = 'Reels',
   CAROUSELS = 'Carousels',
-  SCRIPTS = 'Scripts'
 }
 
 export type Brand = 'Terribly Tiny Tales' | 'Dobara' | 'Fingertips' | 'Juice Box' | 'Personal' | 'Other';
@@ -39,7 +38,6 @@ export interface PortfolioItem {
   media?: MediaItem[]; // New: support for multiple assets
   date: string;
   instagramLink?: string;
-  driveLink?: string;
   stats?: {
     value: string;
     label: string;
