@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PortfolioItem } from '../types';
 import {
   ExternalLink, Heart, MessageCircle, Share2, Eye, Star, Zap,
@@ -74,11 +74,58 @@ const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
   const [allImagesPreloaded, setAllImagesPreloaded] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const mediaList = item.media || [{ type: 'image', url: item.imageUrl }];
   const currentMedia = mediaList[activeMediaIndex];
 
   const brandClass = getBrandColor(item.brand);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Track Card Visibility
+  useEffect(() => {
+    const cardElement = cardRef.current;
+    if (!cardElement) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(cardElement);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Play/Pause Video on View
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (!videoElement || currentMedia.type !== 'video') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            videoElement.play().catch((e) => console.log('Autoplay prevented:', e));
+          } else {
+            videoElement.pause();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(videoElement);
+
+    return () => {
+      observer.unobserve(videoElement);
+    };
+  }, [currentMedia, activeMediaIndex]);
 
   // Preload all images in the carousel
   useEffect(() => {
@@ -120,16 +167,16 @@ const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
     }
   }, [activeMediaIndex, currentMedia.url, allImagesPreloaded]);
 
-  // Auto-scroll Logic - only when all images are preloaded
+  // Auto-scroll Logic - only when all images are preloaded and visible
   useEffect(() => {
-    if (mediaList.length <= 1 || isPaused || !allImagesPreloaded) return;
+    if (mediaList.length <= 1 || isPaused || !allImagesPreloaded || !isVisible) return;
 
     const interval = setInterval(() => {
       setActiveMediaIndex((prev) => (prev + 1) % mediaList.length);
     }, 4000); // Scroll every 4 seconds
 
     return () => clearInterval(interval);
-  }, [mediaList.length, isPaused, allImagesPreloaded]);
+  }, [mediaList.length, isPaused, allImagesPreloaded, isVisible]);
 
   const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -165,6 +212,7 @@ const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
 
   return (
     <div
+      ref={cardRef}
       className="group relative bg-[#e0e0e0] border-2 border-t-white border-l-white border-b-black border-r-black p-1 hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)] hover:-translate-y-1 transition-all duration-200 flex flex-col h-full"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -213,10 +261,10 @@ const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
                 ></iframe>
               ) : (
                 <video
+                  ref={videoRef}
                   src={directUrl}
                   className={`w-full h-full object-contain transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
                   controls
-                  autoPlay
                   muted
                   loop
                   playsInline
