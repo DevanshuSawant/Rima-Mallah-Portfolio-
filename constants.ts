@@ -541,10 +541,10 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
 ];
 
 export const SKILLS_CONFIG = [
-  { name: 'Copywriting', message: "Words that weave magic." },
-  { name: 'Scripts', message: "Writing the next blockbuster?" },
-  { name: 'IPs', message: "Intellectual Property? Fancy!" },
   { name: 'Content Strategy', message: "It's all about the master plan." },
+  { name: 'Scripts', message: "Writing the next blockbuster?" },
+  { name: 'Copywriting', message: "Words that weave magic." },
+  { name: 'IPs', message: "Intellectual Property? Fancy!" },
   { name: 'Audience Psychology', message: "Reading minds... sort of." },
   { name: 'Canva', message: "Making it pretty!" },
   { name: 'CapCut', message: "Editing magic on the go." },
