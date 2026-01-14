@@ -42,7 +42,7 @@ const LoadingScreen: React.FC = () => {
         </div>
 
         {/* Copyright Footer */}
-        <div className="absolute bottom-12 left-0 w-full px-12 flex justify-between items-end">
+        <div className="absolute bottom-12 left-0 w-full px-12 flex justify-between items-end" style={{ bottom: 'max(3rem, env(safe-area-inset-bottom, 0px) + 1rem)' }}>
             <span className="text-white/80 text-sm font-medium">Copyright © Rima Mallah</span>
             <span className="text-white font-bold text-lg italic tracking-tight opacity-80">Rima Mallah</span>
         </div>
