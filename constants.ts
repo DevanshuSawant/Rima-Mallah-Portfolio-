@@ -113,11 +113,31 @@ export const SECTIONS: SectionConfig[] = [
 ];
 
 export const PORTFOLIO_ITEMS: PortfolioItem[] = [
-  // --- PROMOTIONAL ---
+  // --- PROMOTIONAL CONTENT ---
+  {
+    id: 'prom-2',
+    title: '5 6 7 ATE (Campus x TTT)',
+    description: 'Behind the scenes with Campus x TTT. A documentary-style reel capturing the raw, unpolished energy of creation.',
+    contentType: 'Promotional',
+    contentFormat: 'Reel',
+    contentStyle: 'Documentary BTS',
+    brand: 'Terribly Tiny Tales',
+    imageUrl: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=2940&auto=format&fit=crop',
+    media: [
+      { type: 'video', url: media_5 },
+      { type: 'video', url: media_6 }
+    ],
+    date: 'Apr 2024',
+    instagramLink: 'https://www.instagram.com/reel/DRRswcLjB3C/?igsh=Y2hzZ2V0eWpsMWNu',
+    stats: [
+      { value: '90K+', label: 'Views' },
+      { value: '500+', label: 'Likes' }
+    ]
+  },
   {
     id: 'prom-3',
-    title: 'Greater Kalesh on Netflix',
-    description: 'A character sketch reel for Netflix. Bringing the drama of "Greater Kalesh" to life with relatable character tropes and sharp editing.',
+    title: 'Kalesh Hotline - Elder Daughter',
+    description: 'Greater Kalesh on Netflix (a TTT Production). A character sketch reel bringing the drama to life.',
     contentType: 'Promotional',
     contentFormat: 'Reel',
     contentStyle: 'Character Sketch Reel',
@@ -137,37 +157,21 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       { value: '1K+', label: 'Likes' }
     ]
   },
-  {
-    id: 'prom-2',
-    title: '5 6 7 ATE (Campus x TTT)',
-    description: 'Behind the scenes with Campus x TTT. A documentary-style reel capturing the raw, unpolished energy of creation and youth culture.',
-    contentType: 'Promotional',
-    contentFormat: 'Reel',
-    contentStyle: 'Documentary BTS',
-    brand: 'Terribly Tiny Tales',
-    imageUrl: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=2940&auto=format&fit=crop',
-    media: [
-      { type: 'video', url: media_5 },
-      { type: 'video', url: media_6 }
-    ],
-    date: 'Apr 2024',
-    instagramLink: 'https://www.instagram.com/reel/DRRswcLjB3C/?igsh=Y2hzZ2V0eWpsMWNu',
-    stats: [
-      { value: '90K+', label: 'Views' },
-      { value: '500+', label: 'Likes' }
-    ]
-  },
-  {
+    {
     id: 'prom-1',
     title: 'Pookie (Maybelline New York x TTT)',
-    description: 'A vibrant collaboration with Maybelline New York. Capturing the "Pookie" aesthetic with high-energy visuals and witty copy that resonated with the beauty community.',
+    description: 'A vibrant collaboration with Maybelline New York. Capturing the "Pookie" aesthetic with high-energy visuals and witty copy.',
     contentType: 'Promotional',
     contentFormat: 'Static Carousel',
     contentStyle: 'Musing',
     brand: 'Terribly Tiny Tales',
     imageUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=2940&auto=format&fit=crop',
     media: [
-      { type: 'video', url: media_11 }
+      { type: 'video', url: media_11 },
+      { type: 'image', url: media_7 },
+      { type: 'image', url: media_8 },
+      { type: 'image', url: media_9 },
+      { type: 'image', url: media_10 }
     ],
     date: 'May 2024',
     instagramLink: 'https://www.instagram.com/p/DPJKNm5Eo-D/?igsh=MWV0djYwMjJpOGYxeA==',
@@ -196,31 +200,97 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ]
   },
 
-  // --- EDITORIAL ---
+  // --- EDITORIAL CONTENT ---
   {
-    id: 'ed-new-1',
-    title: 'The Silent Conversation',
-    description: 'A deeply resonant animated reel exploring the nuances of silence and connection in modern relationships.',
+    id: 'ed-new-7',
+    title: 'context plsss! - mumbai dreams',
+    description: 'Editorial (Original IP: Context Plsss!). Explaining the inexplicable with wit and creative flair.',
     contentType: 'Editorial',
-    contentFormat: 'Reel',
-    contentStyle: 'Animated Reel',
+    contentFormat: 'Static Carousel',
+    contentStyle: 'Explanatory',
     brand: 'Terribly Tiny Tales',
-    imageUrl: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2940&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1553481187-be93c21490a9?q=80&w=2940&auto=format&fit=crop',
     media: [
-      { type: 'video', url: media_12 }
+      { type: 'image', url: media_29 },
+      { type: 'image', url: media_30 },
+      { type: 'image', url: media_31 },
+      { type: 'image', url: media_32 },
+      { type: 'image', url: media_33 }
     ],
-    date: 'Aug 2024',
-    instagramLink: 'https://www.instagram.com/reel/DSKzAA9kroe/?igsh=MWQxbzd2NHM3b2VwNg==',
-    stats: [
-      { value: '2.5M+', label: 'Views' },
-      { value: '90K+', label: 'Likes' },
-      { value: '90K+', label: 'Shares' }
-    ]
+    date: 'Mar 2024',
+    instagramLink: 'https://www.instagram.com/p/DRrgCrZEQkT/?igsh=MTl6N2Y1OWF2d2d1YQ==',
+    stats: [] 
+  },
+  {
+    id: 'ed-new-9',
+    title: 'CTRL - On Firing Friends',
+    description: 'Editorial (Original IP: CTRL). Delving deeper into human-tech interaction.',
+    contentType: 'Editorial',
+    contentFormat: 'Static Carousel',
+    contentStyle: 'Explanatory',
+    brand: 'Terribly Tiny Tales',
+    imageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2944&auto=format&fit=crop',
+    media: [
+      { type: 'image', url: media_42 },
+      { type: 'image', url: media_43 },
+      { type: 'image', url: media_44 },
+      { type: 'image', url: media_45 },
+      { type: 'image', url: media_46 },
+      { type: 'image', url: media_47 },
+      { type: 'image', url: media_48 },
+      { type: 'image', url: media_49 }
+    ],
+    date: 'Feb 2024',
+    instagramLink: 'https://www.instagram.com/p/DSPoeWYDPJ3/?igsh=YnBsMDM1bGdsZHN5',
+    stats: []
+  },
+  {
+    id: 'ed-new-8',
+    title: 'CTRL - Mysterious Guy Trope',
+    description: 'Editorial (Original IP: CTRL). Exploring the control we have (or lack) in digital spaces.',
+    contentType: 'Editorial',
+    contentFormat: 'Static Carousel',
+    contentStyle: 'Explanatory',
+    brand: 'Terribly Tiny Tales',
+    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2940&auto=format&fit=crop',
+    media: [
+      { type: 'image', url: media_34 },
+      { type: 'image', url: media_35 },
+      { type: 'image', url: media_36 },
+      { type: 'image', url: media_37 },
+      { type: 'image', url: media_38 },
+      { type: 'image', url: media_39 },
+      { type: 'image', url: media_40 },
+      { type: 'image', url: media_41 }
+    ],
+    date: 'Feb 2024',
+    instagramLink: 'https://www.instagram.com/p/DSFFvU5jCN9/?igsh=eWMzanZxdG16MTVw',
+    stats: []
+  },
+  {
+    id: 'ed-new-10',
+    title: 'Zohran Mamdani’s Win',
+    description: 'Informational content designed to provide value and insight.',
+    contentType: 'Editorial',
+    contentFormat: 'Static Carousel',
+    contentStyle: 'Informational',
+    brand: 'Terribly Tiny Tales',
+    imageUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2940&auto=format&fit=crop',
+    media: [
+      { type: 'image', url: media_50 },
+      { type: 'image', url: media_51 },
+      { type: 'image', url: media_52 },
+      { type: 'image', url: media_53 },
+      { type: 'image', url: media_54 }
+    ],
+    date: 'Jan 2024',
+    instagramLink: 'https://www.instagram.com/p/DQqwgqtERTi/?igsh=MTA5bGVxcWc5eW1rNA==',
+    stats: []
   },
   {
     id: 'ed-new-2',
-    title: 'Visual Poetry',
-    description: 'Pushing the boundaries of animated storytelling with vivid visuals and a narrative that strikes a chord with millions.',
+    title: 'feels reel',
+    description: 'Animated Reel. Visual Poetry. Story by rima.',
     contentType: 'Editorial',
     contentFormat: 'Reel',
     contentStyle: 'Animated Reel',
@@ -238,9 +308,29 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ]
   },
   {
+    id: 'ed-new-1',
+    title: 'feels reel',
+    description: 'Animated Reel. The Silent Conversation. Story by rima.',
+    contentType: 'Editorial',
+    contentFormat: 'Reel',
+    contentStyle: 'Animated Reel',
+    brand: 'Terribly Tiny Tales',
+    imageUrl: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2940&auto=format&fit=crop',
+    media: [
+      { type: 'video', url: media_12 }
+    ],
+    date: 'Aug 2024',
+    instagramLink: 'https://www.instagram.com/reel/DSKzAA9kroe/?igsh=MWQxbzd2NHM3b2VwNg==',
+    stats: [
+      { value: '2.5M+', label: 'Views' },
+      { value: '90K+', label: 'Likes' },
+      { value: '90K+', label: 'Shares' }
+    ]
+  },
+  {
     id: 'ed-new-3',
-    title: 'Midnight Musings',
-    description: 'A static carousel featuring poetic reflections on late-night thoughts and safe spaces. (Kabir Manja x TTT)',
+    title: 'kabir manja x TTT',
+    description: 'A static carousel featuring poetic reflections on late-night thoughts.',
     contentType: 'Editorial',
     contentFormat: 'Static Carousel',
     contentStyle: 'Musing',
@@ -263,8 +353,8 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   },
   {
     id: 'ed-new-4',
-    title: 'Echoes of Calm',
-    description: 'Capturing the feeling of quiet moments through a minimalist carousel design and evocative copy.',
+    title: 'morning musing',
+    description: 'Capturing the feeling of quiet moments through a minimalist carousel design.',
     contentType: 'Editorial',
     contentFormat: 'Static Carousel',
     contentStyle: 'Musing',
@@ -282,8 +372,8 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   },
   {
     id: 'ed-new-5',
-    title: 'Topical Reflections',
-    description: 'Engaging with current trends through the lens of thoughtful storytelling. (Virat Kohli Birthday)',
+    title: 'virat kohli birthday musing',
+    description: 'Topical editorial content. Engaging with current trends through storytelling.',
     contentType: 'Editorial',
     contentFormat: 'Static Carousel',
     contentStyle: 'Musing',
@@ -304,8 +394,8 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   },
   {
     id: 'ed-new-6',
-    title: 'Viral Threads',
-    description: 'A thread-style carousel designed for maximum engagement and high shareability. (Children’s Day Special)',
+    title: 'children’s day',
+    description: 'A thread-style carousel designed for maximum engagement and high shareability.',
     contentType: 'Editorial',
     contentFormat: 'Thread Carousel',
     contentStyle: 'Musing',
@@ -325,98 +415,12 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       { value: '14K+', label: 'Shares' }
     ]
   },
-  {
-    id: 'ed-new-7',
-    title: 'Context Plsss!',
-    description: 'Original IP exploration: Explaining the inexplicable with wit and creative flair. (Mumbai Dreams)',
-    contentType: 'Editorial',
-    contentFormat: 'Static Carousel',
-    contentStyle: 'Explanatory',
-    brand: 'Terribly Tiny Tales',
-    imageUrl: 'https://images.unsplash.com/photo-1553481187-be93c21490a9?q=80&w=2940&auto=format&fit=crop',
-    media: [
-      { type: 'image', url: media_29 },
-      { type: 'image', url: media_30 },
-      { type: 'image', url: media_31 },
-      { type: 'image', url: media_32 },
-      { type: 'image', url: media_33 }
-    ],
-    date: 'Mar 2024',
-    instagramLink: 'https://www.instagram.com/p/DRrgCrZEQkT/?igsh=MTl6N2Y1OWF2d2d1YQ==',
-    stats: [{ value: 'NEW IP', label: 'Release' }]
-  },
-  {
-    id: 'ed-new-8',
-    title: 'CTRL: The Deep Dive',
-    description: 'Original IP "CTRL" - Exploring the control we have (or lack) in digital spaces. (Mysterious Guy Trope)',
-    contentType: 'Editorial',
-    contentFormat: 'Static Carousel',
-    contentStyle: 'Explanatory',
-    brand: 'Terribly Tiny Tales',
-    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2940&auto=format&fit=crop',
-    media: [
-      { type: 'image', url: media_34 },
-      { type: 'image', url: media_35 },
-      { type: 'image', url: media_36 },
-      { type: 'image', url: media_37 },
-      { type: 'image', url: media_38 },
-      { type: 'image', url: media_39 },
-      { type: 'image', url: media_40 },
-      { type: 'image', url: media_41 }
-    ],
-    date: 'Feb 2024',
-    instagramLink: 'https://www.instagram.com/p/DSFFvU5jCN9/?igsh=eWMzanZxdG16MTVw',
-    stats: [{ value: 'FEATURE', label: 'Series' }]
-  },
-  {
-    id: 'ed-new-9',
-    title: 'CTRL: Connection Lost',
-    description: 'The second installment of the CTRL series, delving deeper into human-tech interaction. (On Firing Friends)',
-    contentType: 'Editorial',
-    contentFormat: 'Static Carousel',
-    contentStyle: 'Explanatory',
-    brand: 'Terribly Tiny Tales',
-    imageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2944&auto=format&fit=crop',
-    media: [
-      { type: 'image', url: media_42 },
-      { type: 'image', url: media_43 },
-      { type: 'image', url: media_44 },
-      { type: 'image', url: media_45 },
-      { type: 'image', url: media_46 },
-      { type: 'image', url: media_47 },
-      { type: 'image', url: media_48 },
-      { type: 'image', url: media_49 }
-    ],
-    date: 'Feb 2024',
-    instagramLink: 'https://www.instagram.com/p/DSPoeWYDPJ3/?igsh=YnBsMDM1bGdsZHN5',
-    stats: [{ value: 'FEATURE', label: 'Series' }]
-  },
-  {
-    id: 'ed-new-10',
-    title: 'Curated Insights',
-    description: 'Informational content designed to provide value and insight into the creative process. (Zohran Mamdani’s Win)',
-    contentType: 'Editorial',
-    contentFormat: 'Static Carousel',
-    contentStyle: 'Informational',
-    brand: 'Terribly Tiny Tales',
-    imageUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2940&auto=format&fit=crop',
-    media: [
-      { type: 'image', url: media_50 },
-      { type: 'image', url: media_51 },
-      { type: 'image', url: media_52 },
-      { type: 'image', url: media_53 },
-      { type: 'image', url: media_54 }
-    ],
-    date: 'Jan 2024',
-    instagramLink: 'https://www.instagram.com/p/DQqwgqtERTi/?igsh=MTA5bGVxcWc5eW1rNA==',
-    stats: [{ value: 'LIVE', label: 'Release' }]
-  },
 
-  // --- SOCIAL ---
+  // --- SOCIAL CONTENT ---
   {
     id: 'soc-1',
     title: 'Zodiac Meme',
-    description: 'Highly relatable zodiac humor designed for shareability. Tapping into astrological trends to drive massive engagement.',
+    description: 'Highly relatable zodiac humor designed for shareability.',
     contentType: 'Social',
     contentFormat: 'Static Carousel',
     contentStyle: 'Entertaining',
@@ -446,7 +450,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
     id: 'soc-2',
     title: 'Couple Meme',
-    description: 'A humorous take on relationships that resonated with a wide audience, sparking conversations in the comments.',
+    description: 'A humorous take on relationships that resonated with a wide audience.',
     contentType: 'Social',
     contentFormat: 'Static Carousel',
     contentStyle: 'Entertaining',
@@ -471,9 +475,29 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ]
   },
   {
+    id: 'soc-3',
+    title: 'Office Meme Reel',
+    description: 'Leveraging trending audio to create relatable workplace humor.',
+    contentType: 'Social',
+    contentFormat: 'Reel',
+    contentStyle: 'Trend',
+    brand: 'Terribly Tiny Tales',
+    imageUrl: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2940&auto=format&fit=crop',
+    media: [
+      { type: 'video', url: media_74 }
+    ],
+    date: '2024',
+    instagramLink: 'https://www.instagram.com/reel/DRj2CzKgfEC/?igsh=MXNrNDMxMmp1N3hiag==',
+    stats: [
+      { value: '50K+', label: 'Views' },
+      { value: '2K+', label: 'Likes' },
+      { value: '700+', label: 'Shares' }
+    ]
+  },
+  {
     id: 'soc-4',
     title: 'Childhood Nostalgia',
-    description: 'A trip down memory lane. This thread carousel engaged users by invoking strong feelings of nostalgia and shared childhood experiences.',
+    description: 'A trip down memory lane invoking strong feelings of nostalgia.',
     contentType: 'Social',
     contentFormat: 'Thread Carousel',
     contentStyle: 'Entertaining',
@@ -496,9 +520,9 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
     id: 'soc-5',
     title: 'Christmas Movie Recommendation',
-    description: 'A curated carousel of festive favorites. Combining entertainment value with utility to drive saves and shares during the holiday season.',
+    description: 'A curated carousel of festive favorites.',
     contentType: 'Social',
-    contentFormat: 'Static Carousel',
+    contentFormat: 'Movie Recommendation Carousel',
     contentStyle: 'Entertaining',
     brand: 'Terribly Tiny Tales',
     imageUrl: 'https://images.unsplash.com/photo-1512389142860-9c449e58a543?q=80&w=2940&auto=format&fit=crop',
@@ -514,27 +538,8 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     stats: [
       { value: '220K+', label: 'Views' },
       { value: '48K+', label: 'Likes' },
+      { value: '50K+', label: 'Shares' },
       { value: '18K+', label: 'Saves' }
-    ]
-  },
-  {
-    id: 'soc-3',
-    title: 'Office Meme Reel',
-    description: 'Leveraging trending audio to create relatable workplace humor. A quick, punchy reel that captures the 9-to-5 vibe.',
-    contentType: 'Social',
-    contentFormat: 'Reel',
-    contentStyle: 'Trend',
-    brand: 'Terribly Tiny Tales',
-    imageUrl: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2940&auto=format&fit=crop',
-    media: [
-      { type: 'video', url: media_74 }
-    ],
-    date: '2024',
-    instagramLink: 'https://www.instagram.com/reel/DRj2CzKgfEC/?igsh=MXNrNDMxMmp1N3hiag==',
-    stats: [
-      { value: '50K+', label: 'Views' },
-      { value: '2K+', label: 'Likes' },
-      { value: '700+', label: 'Shares' }
     ]
   }
 ];
