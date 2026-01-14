@@ -115,28 +115,8 @@ export const SECTIONS: SectionConfig[] = [
 export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   // --- PROMOTIONAL CONTENT ---
   {
-    id: 'prom-2',
-    title: '5 6 7 ATE (Campus x TTT)',
-    description: 'Behind the scenes with Campus x TTT. A documentary-style reel capturing the raw, unpolished energy of creation.',
-    contentType: 'Promotional',
-    contentFormat: 'Reel',
-    contentStyle: 'Documentary BTS',
-    brand: 'Terribly Tiny Tales',
-    imageUrl: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=2940&auto=format&fit=crop',
-    media: [
-      { type: 'video', url: media_5 },
-      { type: 'video', url: media_6 }
-    ],
-    date: 'Apr 2024',
-    instagramLink: 'https://www.instagram.com/reel/DRRswcLjB3C/?igsh=Y2hzZ2V0eWpsMWNu',
-    stats: [
-      { value: '90K+', label: 'Views' },
-      { value: '500+', label: 'Likes' }
-    ]
-  },
-  {
     id: 'prom-3',
-    title: 'Kalesh Hotline - Elder Daughter',
+    title: 'Kalesh Hotline - Elder Daughter (Netflix x TTT)',
     description: 'Greater Kalesh on Netflix (a TTT Production). A character sketch reel bringing the drama to life.',
     contentType: 'Promotional',
     contentFormat: 'Reel',
@@ -158,6 +138,26 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ]
   },
     {
+    id: 'prom-2',
+    title: '5 6 7 ATE (Campus x TTT)',
+    description: 'Behind the scenes with Campus x TTT. A documentary-style reel capturing the raw, unpolished energy of creation.',
+    contentType: 'Promotional',
+    contentFormat: 'Reel',
+    contentStyle: 'Documentary BTS',
+    brand: 'Terribly Tiny Tales',
+    imageUrl: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=2940&auto=format&fit=crop',
+    media: [
+      { type: 'video', url: media_5 },
+      { type: 'video', url: media_6 }
+    ],
+    date: 'Apr 2024',
+    instagramLink: 'https://www.instagram.com/reel/DRRswcLjB3C/?igsh=Y2hzZ2V0eWpsMWNu',
+    stats: [
+      { value: '90K+', label: 'Views' },
+      { value: '500+', label: 'Likes' }
+    ]
+  },
+  {
     id: 'prom-1',
     title: 'Pookie (Maybelline New York x TTT)',
     description: 'A vibrant collaboration with Maybelline New York. Capturing the "Pookie" aesthetic with high-energy visuals and witty copy.',
@@ -168,10 +168,6 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     imageUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=2940&auto=format&fit=crop',
     media: [
       { type: 'video', url: media_11 },
-      { type: 'image', url: media_7 },
-      { type: 'image', url: media_8 },
-      { type: 'image', url: media_9 },
-      { type: 'image', url: media_10 }
     ],
     date: 'May 2024',
     instagramLink: 'https://www.instagram.com/p/DPJKNm5Eo-D/?igsh=MWV0djYwMjJpOGYxeA==',
@@ -183,7 +179,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   },
   {
     id: 'prom-new',
-    title: 'The Yellow Umbrella x Live Love Laugh Foundation',
+    title: 'The Yellow Umbrella (Live Love Laugh Foundation x TTT)',
     description: 'Promotional reel for The Yellow Umbrella x Live Love Laugh Foundation.',
     contentType: 'Promotional',
     contentFormat: 'Reel',
@@ -545,11 +541,12 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
 ];
 
 export const SKILLS_CONFIG = [
+  { name: 'Copywriting', message: "Words that weave magic." },
   { name: 'Scripts', message: "Writing the next blockbuster?" },
   { name: 'IPs', message: "Intellectual Property? Fancy!" },
   { name: 'Content Strategy', message: "It's all about the master plan." },
   { name: 'Audience Psychology', message: "Reading minds... sort of." },
   { name: 'Canva', message: "Making it pretty!" },
   { name: 'CapCut', message: "Editing magic on the go." },
-  { name: 'VN', message: "Video editing pro." }
+  { name: 'VN', message: "Video editing pro." }.
 ];
