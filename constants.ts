@@ -548,5 +548,5 @@ export const SKILLS_CONFIG = [
   { name: 'Audience Psychology', message: "Reading minds... sort of." },
   { name: 'Canva', message: "Making it pretty!" },
   { name: 'CapCut', message: "Editing magic on the go." },
-  { name: 'VN', message: "Video editing pro." }.
+  { name: 'VN', message: "Video editing pro." }
 ];
