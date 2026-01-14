@@ -596,7 +596,7 @@ const App: React.FC = () => {
                     {/* Contact Section */}
                     <div className="border-t-2 border-gray-300 border-dashed my-8 sm:my-12"></div>
 
-                    <div id="contact-section" className="max-w-4xl mx-auto pb-20" style={{ paddingBottom: 'max(5rem, env(safe-area-inset-bottom, 0px) + 3rem)' }}>
+                    <div id="contact-section" className="max-w-4xl mx-auto" style={{ paddingBottom: 'max(5rem, env(safe-area-inset-bottom, 0px) + 3rem)' }}>
                         <div className="flex flex-col items-center mb-6 sm:mb-8 text-center">
                             <h2 className="font-pixel text-3xl sm:text-4xl mb-2 text-black">WHAT ARE YOU WAITING FOR?</h2>
                         </div>
