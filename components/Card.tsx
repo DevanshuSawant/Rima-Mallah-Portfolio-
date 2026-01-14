@@ -168,15 +168,20 @@ const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
   }, [activeMediaIndex, currentMedia.url, allImagesPreloaded]);
 
   // Auto-scroll Logic - only when all images are preloaded and visible
+  // For videos: don't auto-scroll, let them play/loop
+  // For images: advance after 4 seconds
   useEffect(() => {
     if (mediaList.length <= 1 || isPaused || !allImagesPreloaded || !isVisible) return;
 
+    // If current media is a video, don't auto-scroll (videos loop, so user controls navigation)
+    if (currentMedia.type === 'video') return;
+
     const interval = setInterval(() => {
       setActiveMediaIndex((prev) => (prev + 1) % mediaList.length);
-    }, 4000); // Scroll every 4 seconds
+    }, 4000); // Scroll every 4 seconds for images only
 
     return () => clearInterval(interval);
-  }, [mediaList.length, isPaused, allImagesPreloaded, isVisible]);
+  }, [mediaList.length, isPaused, allImagesPreloaded, isVisible, currentMedia.type]);
 
   const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();
