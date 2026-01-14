@@ -84,7 +84,10 @@ import media_81 from './media/social/movie recommendation/IMG_7473_JPG.webp';
 import media_82 from './media/social/movie recommendation/IMG_7474_JPG.webp';
 import media_83 from './media/social/movie recommendation/IMG_7475_JPG.webp';
 import media_84 from './media/promotional/TYU x LLL/yellow_umbrella_optimized.mp4';
-
+import media_85 from './media/promotional/GK-ad copy/1.png';
+import media_86 from './media/promotional/GK-ad copy/2.png';
+import media_87 from './media/promotional/GK-ad copy/3.png';
+import media_88 from './media/promotional/GK-ad copy/4.png';
 
 export const SECTIONS: SectionConfig[] = [
   {
@@ -107,6 +110,11 @@ export const SECTIONS: SectionConfig[] = [
         id: TabId.CAROUSELS,
         label: 'Carousels',
         subFilters: ['All', 'Static', 'Thread', 'Explanatory', 'Informational', 'Entertaining']
+      },
+      {
+        id: TabId.AD_COPY,
+        label: 'Ad Copy',
+        subFilters: ['All']
       },
     ],
   },
@@ -137,7 +145,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       { value: '1K+', label: 'Likes' }
     ]
   },
-    {
+  {
     id: 'prom-2',
     title: '5 6 7 ATE (Campus x TTT)',
     description: 'Behind the scenes with Campus x TTT. A documentary-style reel capturing the raw, unpolished energy of creation.',
@@ -195,6 +203,25 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       { value: '50K+', label: 'Views' }
     ]
   },
+  {
+    id: 'prom-ad-copy',
+    title: 'Pookie Ad-Copy (Maybelline New York x TTT)',
+    description: 'A vibrant collaboration with Maybelline New York. Capturing the "Pookie" aesthetic with high-energy visuals and witty copy.',
+    contentType: 'Promotional',
+    contentFormat: 'Ad Copy',
+    contentStyle: 'Entertaining',
+    brand: 'Terribly Tiny Tales',
+    imageUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=2940&auto=format&fit=crop',
+    media: [
+      { type: 'image', url: media_85 },
+      { type: 'image', url: media_86 },
+      { type: 'image', url: media_87 },
+      { type: 'image', url: media_88 },
+    ],
+    date: 'May 2024',
+    instagramLink: 'https://www.youtube.com/watch?v=E5l9uEVlPNY',
+    stats: []
+  },
 
   // --- EDITORIAL CONTENT ---
   {
@@ -215,7 +242,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ],
     date: 'Mar 2024',
     instagramLink: 'https://www.instagram.com/p/DRrgCrZEQkT/?igsh=MTl6N2Y1OWF2d2d1YQ==',
-    stats: [] 
+    stats: []
   },
   {
     id: 'ed-new-9',
@@ -518,7 +545,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     title: 'Christmas Movie Recommendation',
     description: 'A curated carousel of festive favorites.',
     contentType: 'Social',
-    contentFormat: 'Movie Recommendation Carousel',
+    contentFormat: 'Recommendation Carousel',
     contentStyle: 'Entertaining',
     brand: 'Terribly Tiny Tales',
     imageUrl: 'https://images.unsplash.com/photo-1512389142860-9c449e58a543?q=80&w=2940&auto=format&fit=crop',

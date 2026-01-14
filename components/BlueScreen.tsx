@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import bsodSound from '../media/windows-xp-critical-error-full-version.mp3';
 
 interface BlueScreenProps {
     onRestart: () => void;
@@ -9,6 +10,11 @@ const BlueScreen: React.FC<BlueScreenProps> = ({ onRestart }) => {
     const [canRestart, setCanRestart] = useState(false);
 
     useEffect(() => {
+        // Play BSOD sound
+        const audio = new Audio(bsodSound);
+        audio.volume = 0.5;
+        audio.play().catch(e => console.warn("BSOD sound blocked:", e));
+
         // Add a small delay before allowing restart to prevent accidental double-clicks
         const timer = setTimeout(() => {
             setCanRestart(true);

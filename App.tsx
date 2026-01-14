@@ -9,6 +9,8 @@ import { SectionType, TabId, TabConfig, SectionConfig } from './types';
 import { SECTIONS, PORTFOLIO_ITEMS, SKILLS_CONFIG } from './constants';
 import { X, Instagram, Linkedin, Mail, Send, FileText, Layout, Plus } from 'lucide-react';
 import profilePic from './media/pfp_options/profile_pic.webp';
+import clickSound from './media/click.mp3';
+import startupSound from './media/windows-xp-startup.mp3';
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import { Analytics } from "@vercel/analytics/react"
 
@@ -61,32 +63,60 @@ const App: React.FC = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    const audioContextRef = useRef<AudioContext | null>(null);
+    const clickBufferRef = useRef<AudioBuffer | null>(null);
+
     useEffect(() => {
-        const playClickSound = () => {
+        // Initialize Audio Context and Preload Sound
+        const initAudio = async () => {
             try {
                 const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
                 if (!AudioContext) return;
 
                 const ctx = new AudioContext();
-                const oscillator = ctx.createOscillator();
-                const gainNode = ctx.createGain();
+                audioContextRef.current = ctx;
 
-                oscillator.connect(gainNode);
-                gainNode.connect(ctx.destination);
-
-                // "More Clicky" Sound Synthesis
-                // Sharper attack with higher frequency triangle wave to simulate a mechanical click
-                oscillator.type = 'triangle';
-                oscillator.frequency.setValueAtTime(1000, ctx.currentTime);
-                oscillator.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.08);
-
-                gainNode.gain.setValueAtTime(0.15, ctx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-
-                oscillator.start();
-                oscillator.stop(ctx.currentTime + 0.08);
+                const response = await fetch(clickSound);
+                const arrayBuffer = await response.arrayBuffer();
+                const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+                clickBufferRef.current = audioBuffer;
             } catch (error) {
-                // Silent failure if audio is blocked or not supported
+                console.warn("Failed to load click sound:", error);
+            }
+        };
+
+        initAudio();
+
+        return () => {
+            if (audioContextRef.current) {
+                audioContextRef.current.close();
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        const playClickSound = () => {
+            // Resume context if suspended (browser policy)
+            if (audioContextRef.current?.state === 'suspended') {
+                audioContextRef.current.resume();
+            }
+
+            if (audioContextRef.current && clickBufferRef.current) {
+                try {
+                    const source = audioContextRef.current.createBufferSource();
+                    source.buffer = clickBufferRef.current;
+
+                    // Create a gain node for volume control
+                    const gainNode = audioContextRef.current.createGain();
+                    gainNode.gain.value = 0.5; // adjust volume
+
+                    source.connect(gainNode);
+                    gainNode.connect(audioContextRef.current.destination);
+
+                    source.start(0, 0.05);
+                } catch (e) {
+                    console.warn("Audio play failed", e);
+                }
             }
         };
 
@@ -105,66 +135,19 @@ const App: React.FC = () => {
             }
         };
 
-        window.addEventListener('click', handleGlobalClick);
-        return () => window.removeEventListener('click', handleGlobalClick);
+        // Use mousedown for immediate feedback (perceived lower latency)
+        window.addEventListener('mousedown', handleGlobalClick);
+        return () => window.removeEventListener('mousedown', handleGlobalClick);
     }, []);
 
     // Startup Sound Function
     const playStartupSound = () => {
         try {
-            const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-            if (!AudioContext) return;
-
-            const ctx = new AudioContext();
-            const now = ctx.currentTime;
-
-            // Master volume
-            const masterGain = ctx.createGain();
-            masterGain.gain.value = 0.2;
-            masterGain.connect(ctx.destination);
-
-            // Windows-like Ethereal Swell Notes (Pentatonic-ish)
-            // Frequencies: C4, E4, G4, A4, C5, E5 + Deep Bass C3
-            const notes = [261.63, 329.63, 392.00, 440.00, 523.25, 659.25];
-
-            // Play the swelling chord
-            notes.forEach((freq, i) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-
-                // Mix sine and triangle for a "glassy but full" tone
-                osc.type = i % 2 === 0 ? 'sine' : 'triangle';
-                osc.frequency.setValueAtTime(freq, now);
-
-                // Envelope: Slow attack, long decay
-                gain.gain.setValueAtTime(0, now);
-                // Stagger attacks slightly
-                const attackTime = now + 0.1 + (i * 0.15);
-                gain.gain.linearRampToValueAtTime(0.2, attackTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, attackTime + 5);
-
-                osc.connect(gain);
-                gain.connect(masterGain);
-
-                osc.start(now);
-                osc.stop(now + 6);
-            });
-
-            // Add Bass for depth
-            const bassOsc = ctx.createOscillator();
-            const bassGain = ctx.createGain();
-            bassOsc.type = 'sine';
-            bassOsc.frequency.setValueAtTime(130.81, now); // C3
-            bassGain.gain.setValueAtTime(0, now);
-            bassGain.gain.linearRampToValueAtTime(0.4, now + 1);
-            bassGain.gain.exponentialRampToValueAtTime(0.001, now + 6);
-            bassOsc.connect(bassGain);
-            bassGain.connect(masterGain);
-            bassOsc.start(now);
-            bassOsc.stop(now + 6);
-
+            const audio = new Audio(startupSound);
+            audio.volume = 0.5;
+            audio.play().catch(e => console.warn("Startup sound blocked:", e));
         } catch (e) {
-            console.warn("Audio playback blocked or failed:", e);
+            console.warn("Audio playback failed:", e);
         }
     };
 
@@ -277,6 +260,9 @@ const App: React.FC = () => {
             case TabId.CAROUSELS:
                 items = items.filter(i => i.contentFormat.includes('Carousel') || i.contentFormat.includes('Infographic') || i.contentFormat.includes('Thread') || i.contentFormat.includes('Dump'));
                 break;
+            case TabId.AD_COPY:
+                items = items.filter(i => i.contentFormat === 'Ad Copy');
+                break;
         }
 
         // Level 2: Sub Filters (if active)
@@ -311,7 +297,10 @@ const App: React.FC = () => {
             <BrowserFrame
                 urlPath={urlDisplay}
                 isClosed={isComputerOff}
-                onClose={() => setIsComputerOff(true)}
+                onClose={() => {
+                    setClippyMessage("Wait! You can't just close the internet! :O");
+                    setTimeout(() => setClippyMessage(null), 4000);
+                }}
                 onRestart={() => {
                     playStartupSound();
                     setIsComputerOff(false);
@@ -549,44 +538,55 @@ const App: React.FC = () => {
                                 );
                             }
 
+                            // Define Render Blocks
+                            const ImagesGrid = imageItems.length > 0 && (
+                                <div>
+                                    <h4 className="font-pixel text-lg text-gray-600 mb-3 flex items-center gap-2">
+                                        <span className="bg-[#00ff00] px-2 py-0.5 text-black border border-black">📷 IMAGES</span>
+                                        <span className="text-sm text-gray-400">({imageItems.length})</span>
+                                    </h4>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                                        {imageItems.map(item => (
+                                            <Card
+                                                key={item.id}
+                                                item={item}
+                                                onInteraction={setClippyMessage}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+
+                            const VideosGrid = videoItems.length > 0 && (
+                                <div>
+                                    <h4 className="font-pixel text-lg text-gray-600 mb-3 flex items-center gap-2">
+                                        <span className="bg-[#ff00ff] px-2 py-0.5 text-white border border-black">🎬 REELS</span>
+                                        <span className="text-sm text-gray-400">({videoItems.length})</span>
+                                    </h4>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                                        {videoItems.map(item => (
+                                            <Card
+                                                key={item.id}
+                                                item={item}
+                                                onInteraction={setClippyMessage}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+
                             return (
                                 <div className="space-y-8 pb-20">
-                                    {/* Images Grid (4:5 ratio) */}
-                                    {imageItems.length > 0 && (
-                                        <div>
-                                            <h4 className="font-pixel text-lg text-gray-600 mb-3 flex items-center gap-2">
-                                                <span className="bg-[#00ff00] px-2 py-0.5 text-black border border-black">📷 IMAGES</span>
-                                                <span className="text-sm text-gray-400">({imageItems.length})</span>
-                                            </h4>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                                                {imageItems.map(item => (
-                                                    <Card
-                                                        key={item.id}
-                                                        item={item}
-                                                        onInteraction={setClippyMessage}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Videos Grid (9:16 ratio) */}
-                                    {videoItems.length > 0 && (
-                                        <div>
-                                            <h4 className="font-pixel text-lg text-gray-600 mb-3 flex items-center gap-2">
-                                                <span className="bg-[#ff00ff] px-2 py-0.5 text-white border border-black">🎬 REELS</span>
-                                                <span className="text-sm text-gray-400">({videoItems.length})</span>
-                                            </h4>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                                                {videoItems.map(item => (
-                                                    <Card
-                                                        key={item.id}
-                                                        item={item}
-                                                        onInteraction={setClippyMessage}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
+                                    {activeTabId === TabId.PROMOTIONAL ? (
+                                        <>
+                                            {VideosGrid}
+                                            {ImagesGrid}
+                                        </>
+                                    ) : (
+                                        <>
+                                            {ImagesGrid}
+                                            {VideosGrid}
+                                        </>
                                     )}
                                 </div>
                             );

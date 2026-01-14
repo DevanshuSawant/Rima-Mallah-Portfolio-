@@ -16,6 +16,7 @@ export enum TabId {
   // Content Formats
   REELS = 'Reels',
   CAROUSELS = 'Carousels',
+  AD_COPY = 'Ad Copy',
 }
 
 export type Brand = 'Terribly Tiny Tales' | 'Dobara' | 'Fingertips' | 'Juice Box' | 'Personal' | 'Other';
