@@ -88,6 +88,29 @@ import media_85 from './media/promotional/GK-ad copy/1.png';
 import media_86 from './media/promotional/GK-ad copy/2.png';
 import media_87 from './media/promotional/GK-ad copy/3.png';
 import media_88 from './media/promotional/GK-ad copy/4.png';
+// Women's Day RoundUp Media
+import IMG_9524 from './media/editorial/women_day_roundup/IMG_9524.webp';
+import IMG_9525 from './media/editorial/women_day_roundup/IMG_9525.webp';
+import IMG_9526 from './media/editorial/women_day_roundup/IMG_9526.webp';
+import IMG_9527 from './media/editorial/women_day_roundup/IMG_9527.webp';
+import IMG_9528 from './media/editorial/women_day_roundup/IMG_9528.webp';
+import IMG_9529 from './media/editorial/women_day_roundup/IMG_9529.webp';
+import IMG_9530 from './media/editorial/women_day_roundup/IMG_9530.webp';
+import IMG_9531 from './media/editorial/women_day_roundup/IMG_9531.webp';
+
+// Women's Day Playlist Media
+import IMG_9535 from './media/editorial/womens_day_playlist/IMG_9535.webp';
+import womens_day_playlist_v1 from './media/editorial/womens_day_playlist/womens_day_playlist_v1.mp4';
+import womens_day_playlist_v2 from './media/editorial/womens_day_playlist/womens_day_playlist_v2.mp4';
+import womens_day_playlist_v3 from './media/editorial/womens_day_playlist/womens_day_playlist_v3.mp4';
+import womens_day_playlist_v4 from './media/editorial/womens_day_playlist/womens_day_playlist_v4.mp4';
+import womens_day_playlist_v5 from './media/editorial/womens_day_playlist/womens_day_playlist_v5.mp4';
+
+// April Fools Media
+import april_fools_v1 from './media/social/april fools/april_fools_v1.mp4';
+
+// Nanku Universe Media
+import nanku_universe_v1 from './media/social/nanku_universe/nanku_universe_v1.mp4';
 
 export const SECTIONS: SectionConfig[] = [
   {
@@ -104,7 +127,7 @@ export const SECTIONS: SectionConfig[] = [
       {
         id: TabId.REELS,
         label: 'Reels',
-        subFilters: ['All', 'Animated', 'Vox Pop', 'Trend', 'Documentary', 'Character Sketch']
+        subFilters: ['All', 'Animated', 'Vox Pop', 'Trend', 'Documentary', 'Character Sketch', 'Entertaining']
       },
       {
         id: TabId.CAROUSELS,
@@ -563,6 +586,91 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       { value: '48K+', label: 'Likes' },
       { value: '50K+', label: 'Shares' },
       { value: '18K+', label: 'Saves' }
+    ]
+  },
+  // --- THE SMALL BIG IDEA CONTENT ---
+  {
+    id: 'tsbi-1',
+    title: 'Women’s Day RoundUp (Topsify India)',
+    description: 'A comprehensive roundup of Women’s Day highlights for Topsify India.',
+    contentType: 'Editorial',
+    contentFormat: 'Static Carousel',
+    contentStyle: 'Explanatory',
+    brand: 'The Small Big Idea',
+    imageUrl: IMG_9524,
+    media: [
+      { type: 'image', url: IMG_9524 },
+      { type: 'image', url: IMG_9525 },
+      { type: 'image', url: IMG_9526 },
+      { type: 'image', url: IMG_9527 },
+      { type: 'image', url: IMG_9528 },
+      { type: 'image', url: IMG_9529 },
+      { type: 'image', url: IMG_9530 },
+      { type: 'image', url: IMG_9531 },
+    ],
+    date: 'Mar 2024',
+    instagramLink: 'https://www.instagram.com/p/DVn8SDoiBs8/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==',
+    stats: [
+      { value: '42240+', label: 'Views' }
+    ]
+  },
+  {
+    id: 'tsbi-2',
+    title: 'Women’s Day Playlist Recommendation (Warner Music South Asia)',
+    description: 'Curated Women’s Day playlist for Warner Music South Asia.',
+    contentType: 'Editorial',
+    contentFormat: 'Video Carousel',
+    contentStyle: 'Entertaining',
+    brand: 'The Small Big Idea',
+    imageUrl: womens_day_playlist_v1,
+    media: [
+      { type: 'video', url: womens_day_playlist_v1 },
+      { type: 'video', url: womens_day_playlist_v2 },
+      { type: 'video', url: womens_day_playlist_v3 },
+      { type: 'video', url: womens_day_playlist_v4 },
+      { type: 'video', url: womens_day_playlist_v5 },
+      { type: 'image', url: IMG_9535 },
+    ],
+    date: 'Mar 2024',
+    instagramLink: 'https://www.instagram.com/p/DVnE_PnCCJP/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==',
+    stats: [
+      { value: '6122+', label: 'Views' }
+    ]
+  },
+  {
+    id: 'tsbi-3',
+    title: 'April Fools Day Prank (Topsify India)',
+    description: 'A hilarious office prank reel for April Fools Day.',
+    contentType: 'Social',
+    contentFormat: 'Reel',
+    contentStyle: 'Entertaining',
+    brand: 'The Small Big Idea',
+    imageUrl: april_fools_v1,
+    media: [
+      { type: 'video', url: april_fools_v1 },
+    ],
+    date: 'Apr 2024',
+    instagramLink: 'https://www.instagram.com/reel/DWlfljUiFMI/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==',
+    stats: [
+      { value: '6384+', label: 'Views' }
+    ]
+  },
+  {
+    id: 'tsbi-4',
+    title: 'Nanku Universe (Warner Music South Asia)',
+    description: 'Deep dive into the Nanku Universe for Warner Music South Asia.',
+    contentType: 'Social',
+    contentFormat: 'Reel',
+    contentStyle: 'Entertaining',
+    brand: 'The Small Big Idea',
+    imageUrl: nanku_universe_v1,
+    media: [
+      { type: 'video', url: nanku_universe_v1 },
+    ],
+    date: 'Apr 2024',
+    instagramLink: 'https://www.instagram.com/reel/DVlbVV-CO_Z/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==',
+    stats: [
+      { value: '6707+', label: 'Views' }
     ]
   }
 ];

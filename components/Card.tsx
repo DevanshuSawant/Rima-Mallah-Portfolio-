@@ -45,6 +45,7 @@ const getBrandColor = (brand: string) => {
     case 'Dobara': return 'bg-purple-600 text-white';
     case 'Fingertips': return 'bg-red-700 text-white';
     case 'Juice Box': return 'bg-orange-500 text-white';
+    case 'The Small Big Idea': return 'bg-black text-white';
     default: return 'bg-blue-800 text-white';
   }
 };

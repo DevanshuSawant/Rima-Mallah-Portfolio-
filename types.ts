@@ -19,7 +19,7 @@ export enum TabId {
   AD_COPY = 'Ad Copy',
 }
 
-export type Brand = 'Terribly Tiny Tales' | 'Dobara' | 'Fingertips' | 'Juice Box' | 'Personal' | 'Other';
+export type Brand = 'Terribly Tiny Tales' | 'Dobara' | 'Fingertips' | 'Juice Box' | 'The Small Big Idea' | 'Personal' | 'Other';
 
 export interface MediaItem {
   type: 'image' | 'video';
