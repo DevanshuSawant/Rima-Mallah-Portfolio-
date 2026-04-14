@@ -611,7 +611,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     date: 'Mar 2024',
     instagramLink: 'https://www.instagram.com/p/DVn8SDoiBs8/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==',
     stats: [
-      { value: '42240+', label: 'Views' }
+      { value: '42.2K+', label: 'Views' }
     ]
   },
   {
@@ -634,7 +634,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     date: 'Mar 2024',
     instagramLink: 'https://www.instagram.com/p/DVnE_PnCCJP/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==',
     stats: [
-      { value: '6122+', label: 'Views' }
+      { value: '6.1K+', label: 'Views' }
     ]
   },
   {
@@ -652,7 +652,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     date: 'Apr 2024',
     instagramLink: 'https://www.instagram.com/reel/DWlfljUiFMI/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==',
     stats: [
-      { value: '6384+', label: 'Views' }
+      { value: '6.4K+', label: 'Views' }
     ]
   },
   {
@@ -670,7 +670,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     date: 'Apr 2024',
     instagramLink: 'https://www.instagram.com/reel/DVlbVV-CO_Z/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==',
     stats: [
-      { value: '6707+', label: 'Views' }
+      { value: '6.7K+', label: 'Views' }
     ]
   }
 ];
