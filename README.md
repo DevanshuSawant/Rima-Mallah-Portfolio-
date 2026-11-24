@@ -18,3 +18,13 @@ View your app in AI Studio: https://ai.studio/apps/drive/1pK-Y13pcqXEvqUGyg_Dl1r
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Media previews
+
+After adding or replacing local media imports, run `npm run media:previews`.
+This generates responsive WebP card images and video poster frames in
+`media/previews/`, plus the `media-previews.ts` lookup. Commit these generated
+files with the content changes. The original media stays available at full quality.
+
+Cards load previews near the viewport. Video data loads only while a card is
+visible, and carousels warm the next slide instead of downloading the whole set.

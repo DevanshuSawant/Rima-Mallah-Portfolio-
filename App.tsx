@@ -9,6 +9,7 @@ import { SectionType, TabId, TabConfig, SectionConfig } from './types';
 import { SECTIONS, PORTFOLIO_ITEMS, REEL_ORDER, SKILLS_CONFIG } from './constants';
 import { X, Instagram, Linkedin, Mail, Send, FileText, Layout, Plus } from 'lucide-react';
 import profilePic from './media/pfp_options/profile_pic.webp';
+import { MEDIA_PREVIEWS } from './media-previews';
 import clickSound from './media/click.mp3';
 import startupSound from './media/windows-xp-startup.mp3';
 import { SpeedInsights } from "@vercel/speed-insights/react"
@@ -437,7 +438,11 @@ const App: React.FC = () => {
                                                 <div className="p-1">
                                                     <div className="border-2 border-gray-600 border-b-white border-r-white bg-white p-2">
                                                         <img
-                                                            src={profilePic}
+                                                            src={MEDIA_PREVIEWS[profilePic]?.src || profilePic}
+                                                            srcSet={MEDIA_PREVIEWS[profilePic]?.srcSet}
+                                                            sizes="(min-width: 768px) 384px, 100vw"
+                                                            fetchPriority="high"
+                                                            decoding="async"
                                                             alt="Rima Profile"
                                                             className="w-full h-auto aspect-video object-cover filter contrast-125 sepia-[0.2]"
                                                         />

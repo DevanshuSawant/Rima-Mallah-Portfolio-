@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PortfolioItem } from '../types';
+import { MEDIA_PREVIEWS } from '../media-previews';
+
+const CARD_IMAGE_SIZES = '(min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw';
 import {
   ExternalLink, Heart, MessageCircle, Share2, Eye, Star, Zap,
   ChevronLeft, ChevronRight, Play
@@ -75,131 +78,94 @@ const StatBadge: React.FC<{ value: string; label: string }> = ({ value, label })
 const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const [allImagesPreloaded, setAllImagesPreloaded] = useState(false);
+  const [loadedMediaUrl, setLoadedMediaUrl] = useState<string | null>(null);
+  const [loadedPosterUrl, setLoadedPosterUrl] = useState<string | null>(null);
+  const [failedMediaUrl, setFailedMediaUrl] = useState<string | null>(null);
+  const [isNearViewport, setIsNearViewport] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const mediaList = item.media || [{ type: 'image', url: item.imageUrl }];
   const currentMedia = mediaList[activeMediaIndex];
+  const directUrl = getDirectMediaUrl(currentMedia.url, currentMedia.type);
+  const preview = MEDIA_PREVIEWS[currentMedia.url];
+  const imageSrc = preview?.src || directUrl;
+  const posterUrl = currentMedia.thumbnail || preview?.poster;
+  const isLoaded = loadedMediaUrl === directUrl;
+  const hasError = failedMediaUrl === directUrl;
+  const hasPreview = isLoaded || (posterUrl && loadedPosterUrl === posterUrl);
   // Keep mixed-media carousels the same size while switching slides.
   const isVideoCard = item.contentFormat.includes('Reel') || mediaList[0]?.type === 'video';
-
   const brandClass = getBrandColor(item.brand);
-
   const videoRef = useRef<HTMLVideoElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Track Card Visibility
   useEffect(() => {
-    const cardElement = cardRef.current;
-    if (!cardElement) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(cardElement);
-
-    return () => observer.disconnect();
+    const card = cardRef.current;
+    if (!card) return;
+    const root = card.closest('#browser-content');
+    // Fetch small previews shortly before a card enters the scroll viewport.
+    const nearby = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsNearViewport(true);
+        nearby.disconnect();
+      }
+    }, { root, rootMargin: '400px 0px' });
+    // Only visible cards may request video data or autoplay.
+    const visible = new IntersectionObserver(([entry]) => {
+      setIsVisible(entry.isIntersecting && entry.intersectionRatio >= 0.15);
+    }, { root, threshold: [0, 0.15] });
+    nearby.observe(card);
+    visible.observe(card);
+    return () => { nearby.disconnect(); visible.disconnect(); };
   }, []);
 
-  // Play/Pause Video on View
   useEffect(() => {
-    const videoElement = videoRef.current;
-    if (!videoElement || currentMedia.type !== 'video') return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            videoElement.play().catch((e) => console.log('Autoplay prevented:', e));
-          } else {
-            videoElement.pause();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(videoElement);
-
-    return () => {
-      observer.unobserve(videoElement);
-    };
-  }, [currentMedia, activeMediaIndex]);
-
-  // Preload all images in the carousel
-  useEffect(() => {
-    const imageMediaItems = mediaList.filter(m => m.type === 'image');
-
-    if (imageMediaItems.length === 0) {
-      setAllImagesPreloaded(true);
-      return;
-    }
-
-    let loadedCount = 0;
-    const totalImages = imageMediaItems.length;
-
-    imageMediaItems.forEach((media) => {
-      const img = new Image();
-      img.src = getDirectMediaUrl(media.url, 'image');
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount >= totalImages) {
-          setAllImagesPreloaded(true);
-        }
-      };
-      img.onerror = () => {
-        loadedCount++;
-        if (loadedCount >= totalImages) {
-          setAllImagesPreloaded(true);
-        }
-      };
-    });
-  }, [mediaList]);
-
-  // Reset loading state when media changes
-  useEffect(() => {
-    // If images are preloaded, skip the loading state for images
-    if (currentMedia.type === 'image' && allImagesPreloaded) {
-      setIsLoaded(true);
+    const video = videoRef.current;
+    if (!video || currentMedia.type !== 'video') return;
+    if (isVisible) {
+      video.play().catch(() => { /* Browser controls remain available if autoplay is blocked. */ });
     } else {
-      setIsLoaded(false);
+      video.pause();
+      // The src is removed when offscreen; load() aborts any outstanding download.
+      video.load();
     }
-  }, [activeMediaIndex, currentMedia.url, allImagesPreloaded]);
+    return () => video.pause();
+  }, [isVisible, directUrl, currentMedia.type]);
 
-  // Auto-scroll Logic - only when all images are preloaded and visible
-  // For videos: don't auto-scroll, let them play/loop
-  // For images: advance after 4 seconds
+  const nextMedia = mediaList[(activeMediaIndex + 1) % mediaList.length];
+  const nextPreview = MEDIA_PREVIEWS[nextMedia.url];
+  const nextImageSrc = nextMedia.type === 'image'
+    ? nextPreview?.src || getDirectMediaUrl(nextMedia.url, 'image')
+    : nextMedia.thumbnail || nextPreview?.poster;
+  const nextSrcSet = nextMedia.type === 'image' ? nextPreview?.srcSet : undefined;
   useEffect(() => {
-    if (mediaList.length <= 1 || isPaused || !allImagesPreloaded || !isVisible) return;
+    if (!isVisible || !isLoaded || mediaList.length < 2 || !nextImageSrc) return;
+    // Warm only the next slide, never every asset in every carousel.
+    const image = new Image();
+    image.decoding = 'async';
+    image.sizes = CARD_IMAGE_SIZES;
+    if (nextSrcSet) image.srcset = nextSrcSet;
+    image.src = nextImageSrc;
+  }, [isVisible, isLoaded, mediaList.length, nextImageSrc, nextSrcSet]);
 
-    // If current media is a video, don't auto-scroll (videos loop, so user controls navigation)
-    if (currentMedia.type === 'video') return;
-
-    const interval = setInterval(() => {
-      setActiveMediaIndex((prev) => (prev + 1) % mediaList.length);
-    }, 4000); // Scroll every 4 seconds for images only
-
-    return () => clearInterval(interval);
-  }, [mediaList.length, isPaused, allImagesPreloaded, isVisible, currentMedia.type]);
+  useEffect(() => {
+    if (mediaList.length <= 1 || isPaused || !isLoaded || !isVisible || currentMedia.type === 'video') return;
+    const timer = setTimeout(() => {
+      setActiveMediaIndex(prev => (prev + 1) % mediaList.length);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [activeMediaIndex, mediaList.length, isPaused, isLoaded, isVisible, currentMedia.type]);
 
   const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    if (!allImagesPreloaded) return; // Don't allow navigation until preloaded
-    setActiveMediaIndex((prev) => (prev + 1) % mediaList.length);
+    setActiveMediaIndex(prev => (prev + 1) % mediaList.length);
     onInteraction(`Viewing asset ${((activeMediaIndex + 1) % mediaList.length) + 1} of ${mediaList.length}`);
   };
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    if (!allImagesPreloaded) return; // Don't allow navigation until preloaded
-    setActiveMediaIndex((prev) => (prev - 1 + mediaList.length) % mediaList.length);
+    setActiveMediaIndex(prev => (prev - 1 + mediaList.length) % mediaList.length);
     onInteraction(`Viewing asset ${((activeMediaIndex - 1 + mediaList.length) % mediaList.length) + 1} of ${mediaList.length}`);
   };
 
@@ -216,8 +182,6 @@ const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
   const handleLinkClick = () => {
     onInteraction("Opening the Instagram link for you!");
   };
-
-  const directUrl = getDirectMediaUrl(currentMedia.url, currentMedia.type);
 
   return (
     <div
@@ -244,46 +208,68 @@ const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
 
         {/* Skeleton Loader - shimmer only, no spinner */}
         <div
-          className={`absolute inset-0 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 bg-[length:200%_100%] animate-shimmer z-10 transition-opacity duration-500 ${isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          className={`absolute inset-0 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 bg-[length:200%_100%] animate-shimmer z-10 transition-opacity duration-500 ${hasPreview || hasError ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         />
 
         {/* Render Logic */}
         <div className="w-full h-full relative">
+          {hasError && (
+            <div className="absolute inset-0 flex items-center justify-center p-6 text-center font-pixel text-white">
+              Preview unavailable. Use OPEN to view this work.
+            </div>
+          )}
           {currentMedia.type === 'image' ? (
-            <img
-              src={directUrl}
+            isNearViewport && <img
+              key={directUrl}
+              src={imageSrc}
+              srcSet={preview?.srcSet}
+              sizes={CARD_IMAGE_SIZES}
               alt={`${item.title} - ${activeMediaIndex}`}
-              className={`w-full h-full object-cover transition-all duration-500 ${isLoaded ? 'opacity-90 group-hover:opacity-100' : 'opacity-0'}`}
+              className={`w-full h-full object-cover transition-opacity duration-300 ${isLoaded ? 'opacity-90 group-hover:opacity-100' : 'opacity-0'}`}
               loading="lazy"
-              onLoad={() => setIsLoaded(true)}
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?q=80&w=2929&auto=format&fit=crop";
-                setIsLoaded(true);
-              }}
+              decoding="async"
+              onLoad={() => setLoadedMediaUrl(directUrl)}
+              onError={() => setFailedMediaUrl(directUrl)}
             />
           ) : (
-            <div className="w-full h-full bg-black">
+            <div className="w-full h-full relative">
+              {isNearViewport && posterUrl && (
+                <img
+                  key={posterUrl}
+                  src={posterUrl}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                  loading="lazy"
+                  decoding="async"
+                  onLoad={() => setLoadedPosterUrl(posterUrl)}
+                />
+              )}
               {currentMedia.url.includes('drive.google.com') ? (
-                <iframe
+                isVisible && <iframe
+                  key={directUrl}
                   src={directUrl}
-                  className={`w-full h-full border-0 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+                  title={item.title}
+                  className={`relative w-full h-full border-0 transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
                   allow="autoplay"
-                  onLoad={() => setIsLoaded(true)}
-                ></iframe>
+                  loading="lazy"
+                  onLoad={() => setLoadedMediaUrl(directUrl)}
+                />
               ) : (
                 <video
+                  key={directUrl}
                   ref={videoRef}
-                  src={directUrl}
-                  className={`w-full h-full object-contain transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+                  src={isVisible ? directUrl : undefined}
+                  className={`relative w-full h-full object-contain transition-opacity duration-300 ${isVisible && isLoaded ? 'opacity-100' : 'opacity-0'}`}
                   controls
                   muted
                   loop
                   playsInline
-                  preload="metadata"
-                  onLoadedData={() => setIsLoaded(true)}
-                  onCanPlay={() => setIsLoaded(true)}
-                ></video>
+                  preload="none"
+                  onEmptied={() => setLoadedMediaUrl(null)}
+                  onLoadedData={() => setLoadedMediaUrl(directUrl)}
+                  onCanPlay={() => setLoadedMediaUrl(directUrl)}
+                  onError={() => setFailedMediaUrl(directUrl)}
+                />
               )}
             </div>
           )}
@@ -295,12 +281,14 @@ const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-2 z-40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
               <button
                 onClick={handlePrev}
+                aria-label="Previous slide"
                 className="w-8 h-8 bg-[#c0c0c0] border-2 border-white border-b-black border-r-black active:border-t-black active:border-l-black active:border-r-white active:border-b-white flex items-center justify-center shadow-md hover:bg-[#d0d0d0] pointer-events-auto"
               >
                 <ChevronLeft size={16} />
               </button>
               <button
                 onClick={handleNext}
+                aria-label="Next slide"
                 className="w-8 h-8 bg-[#c0c0c0] border-2 border-white border-b-black border-r-black active:border-t-black active:border-l-black active:border-r-white active:border-b-white flex items-center justify-center shadow-md hover:bg-[#d0d0d0] pointer-events-auto"
               >
                 <ChevronRight size={16} />
