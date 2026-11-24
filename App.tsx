@@ -6,7 +6,7 @@ import Clippy from './components/Clippy';
 import CuratorWindow from './components/CuratorWindow';
 import LoadingScreen from './components/LoadingScreen';
 import { SectionType, TabId, TabConfig, SectionConfig } from './types';
-import { SECTIONS, PORTFOLIO_ITEMS, SKILLS_CONFIG } from './constants';
+import { SECTIONS, PORTFOLIO_ITEMS, REEL_ORDER, SKILLS_CONFIG } from './constants';
 import { X, Instagram, Linkedin, Mail, Send, FileText, Layout, Plus } from 'lucide-react';
 import profilePic from './media/pfp_options/profile_pic.webp';
 import clickSound from './media/click.mp3';
@@ -274,7 +274,12 @@ const App: React.FC = () => {
             );
         }
 
-        return items;
+        // Keep the requested reel sequence across type and format filters.
+        const reelRank = (id: string) => {
+            const index = REEL_ORDER.indexOf(id);
+            return index === -1 ? REEL_ORDER.length : index;
+        };
+        return [...items].sort((a, b) => reelRank(a.id) - reelRank(b.id));
     }, [activeTabId, activeSubFilter]);
 
     if (showBSOD) {
@@ -515,7 +520,7 @@ const App: React.FC = () => {
 
                         {/* Glossary */}
                         <div className="mb-6 p-3 bg-[#ffffcc] border-2 border-[#caca00] text-xs font-pixel text-gray-700 leading-relaxed max-w-4xl">
-                            <span className="font-bold text-[#8b8b00]">📖 GLOSSARY:</span> Social content for <span className="font-bold">Terribly Tiny Tales</span> and its sister pages, <span className="font-bold">Dobara</span> and <span className="font-bold">Fingertips</span> - full of brand collabs, quirky IPs, and all things Gen Z.
+                            <span className="font-bold text-[#8b8b00]">📖 GLOSSARY:</span> professionally putting words &amp; concepts on the internet for <span className="font-bold">TRESemmé India</span>, <span className="font-bold">Terribly Tiny Tales</span> (+ sister pages) and other corners of the web
                         </div>
 
                         {/* Separate grids for Images and Videos */}

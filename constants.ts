@@ -6,10 +6,6 @@ import media_3 from './media/promotional/Gk/Copy_of_IMG_1102.webp';
 import media_4 from './media/promotional/Gk/Kisi_dini_safaayi_mein_mai_bhi_saaf_ho_jaaungi_You_want_more_Kalesh_we_got_Greater_Kalesh_str_2_optimized.mp4';
 import media_5 from './media/promotional/567ate/Five_Six_Seven_Ate_-_a_journey_that_s_all_about_moving_your_way_All_episodes_now_live_on_ttt_o_optimized.mp4';
 import media_6 from './media/promotional/567ate/why_is_this_literally_one_of_our_besties_watch_five_six_seven_ate_now_all_episodes_out_on_ttt_optimized.mp4';
-import media_7 from './media/promotional/pookie/IMG_7387_JPG.webp';
-import media_8 from './media/promotional/pookie/IMG_7388_JPG.webp';
-import media_9 from './media/promotional/pookie/IMG_7389_JPG.webp';
-import media_10 from './media/promotional/pookie/IMG_7390_JPG.webp';
 import media_11 from './media/promotional/pookie/Introducing_our_Pookiest_Pookies_Tell_us_who_s_your_fav_And_stay_tuned_for_a_new_show_that_s_optimized.mp4';
 import media_12 from './media/editorial/bestie reel/Send_this_to_that_girl_Story_by_rima-_rirachaaa_Animated_by_rishab-_rishabthakur_best_2_optimized.mp4';
 import media_13 from './media/editorial/mushy reel/Same_December_Different_Feeling_Tag_the_person_who_changed_your_december_story_by_rima-_ri_optimized.mp4';
@@ -84,10 +80,6 @@ import media_81 from './media/social/movie recommendation/IMG_7473_JPG.webp';
 import media_82 from './media/social/movie recommendation/IMG_7474_JPG.webp';
 import media_83 from './media/social/movie recommendation/IMG_7475_JPG.webp';
 import media_84 from './media/promotional/TYU x LLL/yellow_umbrella_optimized.mp4';
-import media_85 from './media/promotional/GK-ad copy/1.png';
-import media_86 from './media/promotional/GK-ad copy/2.png';
-import media_87 from './media/promotional/GK-ad copy/3.png';
-import media_88 from './media/promotional/GK-ad copy/4.png';
 // Women's Day RoundUp Media
 import IMG_9524 from './media/editorial/women_day_roundup/IMG_9524.webp';
 import IMG_9525 from './media/editorial/women_day_roundup/IMG_9525.webp';
@@ -111,6 +103,29 @@ import april_fools_v1 from './media/social/april fools/april_fools_v1.mp4';
 
 // Nanku Universe Media
 import nanku_universe_v1 from './media/social/nanku_universe/nanku_universe_v1.mp4';
+
+import talkToMyStrands from './media/tresemme/talk-to-my-strands.mp4';
+import lakmeFashionWeek from './media/tresemme/lakme-fashion-week.mp4';
+import devilWearsPrada from './media/tresemme/devil-wears-prada.mp4';
+import hydra1 from './media/tresemme/hydra-1.webp';
+import hydra2 from './media/tresemme/hydra-2.webp';
+import hydra3 from './media/tresemme/hydra-3.webp';
+import hydra4 from './media/tresemme/hydra-4.webp';
+import hydra5 from './media/tresemme/hydra-5.webp';
+import damage1 from './media/tresemme/damage-1.webp';
+import damage2 from './media/tresemme/damage-2.webp';
+import damage3 from './media/tresemme/damage-3.webp';
+import damage4 from './media/tresemme/damage-4.mp4';
+
+export const REEL_ORDER: string[] = [
+  'prom-3',
+  'tresemme-talk-to-my-strands',
+  'prom-1',
+  'tresemme-lakme-fashion-week',
+  'tresemme-devil-wears-prada',
+  'prom-2',
+  'prom-new',
+];
 
 export const SECTIONS: SectionConfig[] = [
   {
@@ -144,6 +159,83 @@ export const SECTIONS: SectionConfig[] = [
 ];
 
 export const PORTFOLIO_ITEMS: PortfolioItem[] = [
+  // --- TRESemmé India / OLIVER ---
+  {
+    id: 'tresemme-talk-to-my-strands',
+    title: 'Talk To My Strands - Aryan & his AI strategy',
+    description: 'An explanatory reel for TRESemmé India’s original IP, Talk To My Strands.',
+    contentType: 'Editorial',
+    contentFormat: 'Reel',
+    contentStyle: 'Explanatory',
+    brand: 'TRESemmé India',
+    imageUrl: '',
+    media: [{ type: 'video', url: talkToMyStrands }],
+    date: '',
+    instagramLink: 'https://www.instagram.com/p/DfzWmQUt8mo/?hl=en',
+  },
+  {
+    id: 'tresemme-hydra-restock',
+    title: 'Hydra Restock Szn!',
+    description: 'An explanatory product carousel for TRESemmé India.',
+    contentType: 'Editorial',
+    contentFormat: 'Carousel',
+    contentStyle: 'Explanatory',
+    brand: 'TRESemmé India',
+    imageUrl: hydra1,
+    media: [
+      { type: 'image', url: hydra1 },
+      { type: 'image', url: hydra2 },
+      { type: 'image', url: hydra3 },
+      { type: 'image', url: hydra4 },
+      { type: 'image', url: hydra5 },
+    ],
+    date: '',
+    instagramLink: 'https://www.instagram.com/p/Dfr7K_Njneg/?hl=en&img_index=1',
+  },
+  {
+    id: 'tresemme-damage-or-not',
+    title: 'Damage or not?!',
+    description: 'An explanatory carousel for TRESemmé India about hair damage and hydration.',
+    contentType: 'Editorial',
+    contentFormat: 'Carousel',
+    contentStyle: 'Explanatory',
+    brand: 'TRESemmé India',
+    imageUrl: damage1,
+    media: [
+      { type: 'image', url: damage1 },
+      { type: 'image', url: damage2 },
+      { type: 'image', url: damage3 },
+      { type: 'video', url: damage4 },
+    ],
+    date: '',
+    instagramLink: 'https://www.instagram.com/p/DfICjxsjlPY/?hl=en&img_index=1',
+  },
+  {
+    id: 'tresemme-lakme-fashion-week',
+    title: 'TRESemmé India at Lakmē Fashion Week 26’',
+    description: 'An entertaining social reel for TRESemmé India at Lakmē Fashion Week 26’.',
+    contentType: 'Social',
+    contentFormat: 'Reel',
+    contentStyle: 'Entertaining',
+    brand: 'TRESemmé India',
+    imageUrl: '',
+    media: [{ type: 'video', url: lakmeFashionWeek }],
+    date: '',
+    instagramLink: 'https://www.instagram.com/p/Dej6WD6TZRl/?hl=en',
+  },
+  {
+    id: 'tresemme-devil-wears-prada',
+    title: 'TRESemmé X Devil Wears Prada Watch Party',
+    description: 'An entertaining social reel for TRESemmé’s Devil Wears Prada watch party.',
+    contentType: 'Social',
+    contentFormat: 'Reel',
+    contentStyle: 'Entertaining',
+    brand: 'TRESemmé India',
+    imageUrl: '',
+    media: [{ type: 'video', url: devilWearsPrada }],
+    date: '',
+    instagramLink: 'https://www.instagram.com/p/DYKTCy6qKNf/?hl=en',
+  },
   // --- PROMOTIONAL CONTENT ---
   {
     id: 'prom-3',
@@ -193,7 +285,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     title: 'Pookie (Maybelline New York x TTT)',
     description: 'A vibrant collaboration with Maybelline New York. Capturing the "Pookie" aesthetic with high-energy visuals and witty copy.',
     contentType: 'Promotional',
-    contentFormat: 'Static Carousel',
+    contentFormat: 'Reel',
     contentStyle: 'Musing',
     brand: 'Terribly Tiny Tales',
     imageUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=2940&auto=format&fit=crop',
@@ -225,25 +317,6 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     stats: [
       { value: '50K+', label: 'Views' }
     ]
-  },
-  {
-    id: 'prom-ad-copy',
-    title: 'Pookie Ad-Copy (Maybelline New York x TTT)',
-    description: 'A vibrant collaboration with Maybelline New York. Capturing the "Pookie" aesthetic with high-energy visuals and witty copy.',
-    contentType: 'Promotional',
-    contentFormat: 'Ad Copy',
-    contentStyle: 'Entertaining',
-    brand: 'Terribly Tiny Tales',
-    imageUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=2940&auto=format&fit=crop',
-    media: [
-      { type: 'image', url: media_85 },
-      { type: 'image', url: media_86 },
-      { type: 'image', url: media_87 },
-      { type: 'image', url: media_88 },
-    ],
-    date: 'May 2024',
-    instagramLink: 'https://www.youtube.com/watch?v=E5l9uEVlPNY',
-    stats: []
   },
 
   // --- EDITORIAL CONTENT ---
