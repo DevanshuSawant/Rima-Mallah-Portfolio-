@@ -19,8 +19,8 @@ import SystemProperties from './components/SystemProperties';
 
 const App: React.FC = () => {
     // App State
-    const [activeSectionId, setActiveSectionId] = useState<SectionType>(SectionType.TYPE);
-    const [activeTabId, setActiveTabId] = useState<TabId>(SECTIONS[0].tabs[0].id);
+    const [activeSectionId, setActiveSectionId] = useState<SectionType>(SectionType.FORMAT);
+    const [activeTabId, setActiveTabId] = useState<TabId>(TabId.REELS);
     const [activeSubFilter, setActiveSubFilter] = useState<string>('All');
 
     // Fake window states
