@@ -81,6 +81,8 @@ const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
   const [isVisible, setIsVisible] = useState(false);
   const mediaList = item.media || [{ type: 'image', url: item.imageUrl }];
   const currentMedia = mediaList[activeMediaIndex];
+  // Keep mixed-media carousels the same size while switching slides.
+  const isVideoCard = item.contentFormat.includes('Reel') || mediaList[0]?.type === 'video';
 
   const brandClass = getBrandColor(item.brand);
 
@@ -234,8 +236,11 @@ const Card: React.FC<CardProps> = ({ item, onInteraction }) => {
         </div>
       </div>
 
-      {/* Media Viewport - Dynamic aspect ratio: 3:4 for images, 9:16 for videos */}
-      <div className={`relative w-full overflow-hidden border-2 border-gray-600 border-b-white border-r-white bg-black group/media ${currentMedia.type === 'video' || item.contentFormat.includes('Reel') ? 'aspect-[9/16]' : 'aspect-[3/4]'}`}>
+      {/* Media Viewport - Stable aspect ratio: 3:4 for image-led carousels, 9:16 for reels */}
+      <div
+        className={`relative w-full shrink-0 overflow-hidden border-2 border-gray-600 border-b-white border-r-white bg-black group/media ${isVideoCard ? 'aspect-[9/16]' : 'aspect-[3/4]'}`}
+        style={item.mediaAspectRatio ? { aspectRatio: item.mediaAspectRatio } : undefined}
+      >
 
         {/* Skeleton Loader - shimmer only, no spinner */}
         <div

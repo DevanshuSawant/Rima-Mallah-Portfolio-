@@ -104,9 +104,9 @@ import april_fools_v1 from './media/social/april fools/april_fools_v1.mp4';
 // Nanku Universe Media
 import nanku_universe_v1 from './media/social/nanku_universe/nanku_universe_v1.mp4';
 
-import talkToMyStrands from './media/tresemme/talk-to-my-strands.mp4';
-import lakmeFashionWeek from './media/tresemme/lakme-fashion-week.mp4';
-import devilWearsPrada from './media/tresemme/devil-wears-prada.mp4';
+import talkToMyStrands from './media/tresemme/talk-to-my-strands_optimized.mp4';
+import lakmeFashionWeek from './media/tresemme/lakme-fashion-week_optimized.mp4';
+import devilWearsPrada from './media/tresemme/devil-wears-prada_optimized.mp4';
 import hydra1 from './media/tresemme/hydra-1.webp';
 import hydra2 from './media/tresemme/hydra-2.webp';
 import hydra3 from './media/tresemme/hydra-3.webp';
@@ -115,7 +115,7 @@ import hydra5 from './media/tresemme/hydra-5.webp';
 import damage1 from './media/tresemme/damage-1.webp';
 import damage2 from './media/tresemme/damage-2.webp';
 import damage3 from './media/tresemme/damage-3.webp';
-import damage4 from './media/tresemme/damage-4.mp4';
+import damage4 from './media/tresemme/damage-4_optimized.mp4';
 
 export const REEL_ORDER: string[] = [
   'prom-3',
@@ -201,6 +201,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     contentStyle: 'Explanatory',
     brand: 'TRESemmé India',
     imageUrl: damage1,
+    mediaAspectRatio: '4 / 5',
     media: [
       { type: 'image', url: damage1 },
       { type: 'image', url: damage2 },

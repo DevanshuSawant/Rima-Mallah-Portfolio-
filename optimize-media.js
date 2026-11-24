@@ -15,11 +15,14 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png'];
 const VIDEO_EXTENSIONS = ['.mp4', '.mov', '.avi', '.m4v'];
 
-const TARGET_FOLDERS = [
+// Optional folder arguments let new assets use the same settings without
+// recompressing media that has already been published.
+const TARGET_FOLDERS = process.argv.length > 2 ? process.argv.slice(2) : [
     'media/editorial/women_day_roundup',
     'media/editorial/womens_day_playlist',
     'media/social/april fools',
-    'media/social/nanku_universe'
+    'media/social/nanku_universe',
+    'media/tresemme'
 ];
 
 async function processTargetFolders() {
@@ -142,7 +145,26 @@ function optimizeVideo(filePath, directory, basename) {
                 '-vf scale=\'min(1920,iw):-2\''
             ])
             .save(outputPath)
-            .on('end', () => {
+            .on('end', async () => {
+                // Already-compressed sources can grow with this preset. Keep
+                // their original streams and still enable fast-start playback.
+                if (fs.statSync(outputPath).size >= fs.statSync(filePath).size) {
+                    const remuxPath = path.join(directory, `${basename}_faststart.mp4`);
+                    try {
+                        await new Promise((done, fail) => {
+                            ffmpeg(filePath)
+                                .outputOptions(['-c copy', '-movflags +faststart'])
+                                .save(remuxPath)
+                                .on('end', done)
+                                .on('error', fail);
+                        });
+                        fs.renameSync(remuxPath, outputPath);
+                        console.log(`Keeping smaller source streams with fast-start: ${outputName}`);
+                    } catch (err) {
+                        reject(err);
+                        return;
+                    }
+                }
                 console.log(`Saved: ${outputPath}`);
                 // Delete original after success
                 console.log(`Deleting original video: ${filePath}`);

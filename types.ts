@@ -37,6 +37,7 @@ export interface PortfolioItem {
   brand: Brand;
   imageUrl: string; // Keep as fallback/primary
   media?: MediaItem[]; // New: support for multiple assets
+  mediaAspectRatio?: string;
   date: string;
   instagramLink?: string;
   stats?: {
